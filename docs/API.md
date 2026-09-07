@@ -84,6 +84,19 @@ survey distances. CRS transformation requires explicit source and target CRS
 definitions and records reproducible transform metadata. Transforms return
 separate geometry objects; they never edit the source PTR record.
 
+## Geometry To Courses
+
+- `derive_courses_from_polygon(geometry, coordinate_frame=..., distance_decimals=12)`
+  returns `PTRCourseCandidate`.
+
+This inverse operation accepts a simple polygon in a known metric coordinate
+frame and derives PTR-style bearing-distance courses. Output is deterministic:
+the ring is ordered clockwise, the start point is chosen lexicographically,
+distances are rounded to the requested decimal places, and bearings are rounded
+to the nearest whole second. The result is a computational candidate, not
+documentary truth, and it does not invent `tie_point`, `tie_line`,
+`declared_area`, or provenance.
+
 ## Exports
 
 - `to_geojson(parcel)` returns a GeoJSON Feature dictionary.

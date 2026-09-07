@@ -192,6 +192,24 @@ explicit source and target CRS identifiers. Each transform returns a separate
 derived geometry object with reproducible metadata and leaves the source PTR
 record unchanged.
 
+## Geometry To Courses
+
+```python
+from ptr_core import derive_courses_from_polygon
+
+candidate = derive_courses_from_polygon(
+    [(0.0, 0.0), (0.0, 10.0), (20.0, 10.0), (20.0, 0.0)],
+    coordinate_frame="local-metres",
+    distance_decimals=3,
+)
+ptr_like = candidate.to_mapping()
+```
+
+Geometry-to-course conversion accepts simple polygons in a known metric
+coordinate frame. It emits clockwise canonical PTR bearings, rounds distances to
+the requested decimal places, and rounds bearings to the nearest second. The
+output is a computational PTR candidate, not documentary truth.
+
 ## PTR v0.1 Input
 
 ```json

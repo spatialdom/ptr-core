@@ -25,6 +25,11 @@ from ptr_core.geometry import (
     course_to_vector,
     reconstruct,
 )
+from ptr_core.geometry_to_courses import (
+    GeometryToCoursesError,
+    PTRCourseCandidate,
+    derive_courses_from_polygon,
+)
 from ptr_core.georeferencing import (
     GeoreferencedParcel,
     GeoreferencingError,
@@ -61,6 +66,7 @@ __all__ = [
     "CourseComparison",
     "DerivedParcel",
     "Diagnostic",
+    "GeometryToCoursesError",
     "GeoreferencedParcel",
     "GeoreferencingError",
     "ParcelMetrics",
@@ -69,6 +75,7 @@ __all__ = [
     "PTRParseError",
     "PTRSerializationError",
     "PTRUnsupportedVersionError",
+    "PTRCourseCandidate",
     "Point",
     "QAReport",
     "Severity",
@@ -82,6 +89,7 @@ __all__ = [
     "compare_parcels",
     "compute_metrics",
     "course_to_vector",
+    "derive_courses_from_polygon",
     "dump_ptr",
     "dumps_ptr",
     "georeference",

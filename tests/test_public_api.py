@@ -24,6 +24,7 @@ def test_public_api_exports_expected_v01_entry_points():
         "rotate",
         "transform_crs",
         "analyze_topology",
+        "derive_courses_from_polygon",
     }
 
     assert expected <= set(ptr_core.__all__)

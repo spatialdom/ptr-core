@@ -61,11 +61,34 @@ Implemented foundation:
 - PTR v0.1 bearing parsing and safe normalization;
 - layered validation diagnostics for serialization, structural, and semantic
   conformance;
+- local Cartesian course-vector conversion, traverse reconstruction, closure,
+  perimeter, area, declared-area comparison, and geometric QA findings;
 - CI for tests, linting, and type checking.
 
-Geometry reconstruction, closure analysis, area computation, exports, and
-georeferencing are planned follow-on layers. PTR Core does not silently alter
-documentary courses to force geometric closure.
+Exports and georeferencing are planned follow-on layers. PTR Core does not
+silently alter documentary courses to force geometric closure.
+
+## Geometry
+
+Derived geometry uses a local Cartesian frame only: X/Easting is positive east
+and Y/Northing is positive north, both in metres. The origin `(0, 0)` is a
+computational convenience for Point 1, not a coordinate reference system.
+
+```python
+from ptr_core import load_ptr, reconstruct
+
+record = load_ptr("lot.ptr")
+parcel = reconstruct(record)
+
+print(parcel.vertices)
+print(parcel.final_endpoint)
+print(parcel.metrics.closure.linear)
+print(parcel.metrics.area)
+```
+
+Area is computed with the shoelace formula over the reconstructed path and an
+implicit closing segment back to Point 1. Misclosure is reported separately; the
+traverse is not snapped, adjusted, balanced, or redistributed.
 
 ## PTR v0.1 Input
 

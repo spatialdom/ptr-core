@@ -40,6 +40,14 @@ from ptr_core.io import (
 from ptr_core.models import Course, PTRRecord
 from ptr_core.qa import QAReport, qa_report
 from ptr_core.topology import TopologyResult, analyze_topology
+from ptr_core.transforms import (
+    TransformedParcel,
+    TransformError,
+    TransformStep,
+    rotate,
+    transform_crs,
+    translate,
+)
 from ptr_core.validation import Diagnostic, Severity, ValidationResult, validate
 
 __all__ = [
@@ -65,6 +73,9 @@ __all__ = [
     "QAReport",
     "Severity",
     "TopologyResult",
+    "TransformError",
+    "TransformStep",
+    "TransformedParcel",
     "ValidationResult",
     "Vector",
     "analyze_topology",
@@ -80,8 +91,11 @@ __all__ = [
     "parse_bearing",
     "qa_report",
     "reconstruct",
+    "rotate",
     "to_geojson",
     "to_wkt",
+    "transform_crs",
+    "translate",
     "validate",
 ]
 

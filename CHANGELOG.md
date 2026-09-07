@@ -19,6 +19,7 @@ Implemented:
 - Parcel-to-parcel comparison primitives with explicit tolerances.
 - Parcel topology primitives for overlap, containment, adjacency, shared
   boundary length, gaps, and equivalent geometry checks.
+- Explicit geometry transforms for translation, rotation, and CRS conversion.
 - Unit and vendored PTR v0.1 conformance tests.
 
 Known limitations:

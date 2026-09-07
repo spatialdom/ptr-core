@@ -20,6 +20,10 @@ def test_public_api_exports_expected_v01_entry_points():
         "to_geojson",
         "to_wkt",
         "georeference",
+        "translate",
+        "rotate",
+        "transform_crs",
+        "analyze_topology",
     }
 
     assert expected <= set(ptr_core.__all__)

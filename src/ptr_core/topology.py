@@ -9,8 +9,9 @@ from shapely.geometry import LineString, Polygon
 
 from ptr_core.geometry import DerivedParcel, Point
 from ptr_core.georeferencing import GeoreferencedParcel
+from ptr_core.transforms import TransformedParcel
 
-TopologyParcel = DerivedParcel | GeoreferencedParcel
+TopologyParcel = DerivedParcel | GeoreferencedParcel | TransformedParcel
 
 
 @dataclass(frozen=True, slots=True)
@@ -182,14 +183,18 @@ def _same_point(left: Point, right: Point, tolerance: float = 1e-12) -> bool:
 
 
 def _frame_compatibility(left: TopologyParcel, right: TopologyParcel) -> _Frame:
-    if isinstance(left, GeoreferencedParcel) and isinstance(
-        right, GeoreferencedParcel
-    ):
-        if left.crs == right.crs:
-            return _Frame(True, "same_crs", left.crs)
+    left_crs = _crs(left)
+    right_crs = _crs(right)
+    if left_crs is not None and right_crs is not None:
+        if left_crs == right_crs:
+            return _Frame(True, "same_crs", left_crs)
         return _Frame(False, "different_crs", None)
-    if not isinstance(left, GeoreferencedParcel) and not isinstance(
-        right, GeoreferencedParcel
-    ):
+    if left_crs is None and right_crs is None:
         return _Frame(True, "local_unreferenced", None)
     return _Frame(False, "mixed_local_and_georeferenced", None)
+
+
+def _crs(parcel: TopologyParcel) -> str | None:
+    if isinstance(parcel, GeoreferencedParcel | TransformedParcel):
+        return parcel.crs
+    return None

@@ -9,8 +9,9 @@ from typing import Any
 from ptr_core.geometry import DerivedParcel, Point, Vector
 from ptr_core.georeferencing import GeoreferencedParcel
 from ptr_core.models import Course, PTRRecord
+from ptr_core.transforms import TransformedParcel
 
-ComparableParcel = DerivedParcel | GeoreferencedParcel
+ComparableParcel = DerivedParcel | GeoreferencedParcel | TransformedParcel
 
 
 @dataclass(frozen=True, slots=True)
@@ -185,23 +186,27 @@ class _FrameCompatibility:
 def _frame_compatibility(
     left: ComparableParcel, right: ComparableParcel
 ) -> _FrameCompatibility:
-    if isinstance(left, GeoreferencedParcel) and isinstance(
-        right, GeoreferencedParcel
-    ):
-        left_crs = left.crs
-        right_crs = right.crs
+    left_crs = _crs(left)
+    right_crs = _crs(right)
+    if left_crs is not None and right_crs is not None:
         if left_crs == right_crs:
             return _FrameCompatibility(True, "same_crs", left_crs)
         return _FrameCompatibility(False, "different_crs", None)
-    if not isinstance(left, GeoreferencedParcel) and not isinstance(
-        right, GeoreferencedParcel
-    ):
+    if left_crs is None and right_crs is None:
         return _FrameCompatibility(True, "local_unreferenced", None)
     return _FrameCompatibility(False, "mixed_local_and_georeferenced", None)
 
 
 def _local(parcel: ComparableParcel) -> DerivedParcel:
-    return parcel.local if isinstance(parcel, GeoreferencedParcel) else parcel
+    if isinstance(parcel, GeoreferencedParcel | TransformedParcel):
+        return parcel.local
+    return parcel
+
+
+def _crs(parcel: ComparableParcel) -> str | None:
+    if isinstance(parcel, GeoreferencedParcel | TransformedParcel):
+        return parcel.crs
+    return None
 
 
 def _points(parcel: ComparableParcel) -> tuple[Point, ...]:

@@ -173,6 +173,25 @@ point-touching, shared-edge adjacency, shared-boundary length, and gap distance.
 PTR Core uses Shapely/GEOS behind this API for polygon topology; tolerances are
 explicit and no parcel geometry is automatically snapped or repaired.
 
+## Transforms
+
+```python
+from ptr_core import Point, rotate, transform_crs, translate
+
+moved = translate(parcel, dx=10.0, dy=0.0)
+rotated = rotate(parcel, angle_degrees=90.0, origin=Point(0.0, 0.0))
+projected = transform_crs(
+    referenced,
+    source_crs="EPSG:4326",
+    target_crs="EPSG:3857",
+)
+```
+
+Translation and rotation are local rigid-body transforms. CRS transforms require
+explicit source and target CRS identifiers. Each transform returns a separate
+derived geometry object with reproducible metadata and leaves the source PTR
+record unchanged.
+
 ## PTR v0.1 Input
 
 ```json

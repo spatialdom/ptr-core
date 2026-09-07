@@ -6,9 +6,12 @@ from typing import Any
 
 from ptr_core.geometry import DerivedParcel, Point, polygon_signed_area
 from ptr_core.georeferencing import GeoreferencedParcel
+from ptr_core.transforms import TransformedParcel
 
 
-def to_geojson(parcel: DerivedParcel | GeoreferencedParcel) -> dict[str, Any]:
+def to_geojson(
+    parcel: DerivedParcel | GeoreferencedParcel | TransformedParcel,
+) -> dict[str, Any]:
     """Export derived parcel geometry as a GeoJSON Feature."""
 
     ring = _export_ring(parcel)
@@ -20,7 +23,7 @@ def to_geojson(parcel: DerivedParcel | GeoreferencedParcel) -> dict[str, Any]:
     return {"type": "Feature", "properties": properties, "geometry": geometry}
 
 
-def to_wkt(parcel: DerivedParcel | GeoreferencedParcel) -> str:
+def to_wkt(parcel: DerivedParcel | GeoreferencedParcel | TransformedParcel) -> str:
     """Export derived parcel geometry as WKT Polygon text."""
 
     coords = ", ".join(
@@ -29,7 +32,9 @@ def to_wkt(parcel: DerivedParcel | GeoreferencedParcel) -> str:
     return f"POLYGON (({coords}))"
 
 
-def _export_ring(parcel: DerivedParcel | GeoreferencedParcel) -> tuple[Point, ...]:
+def _export_ring(
+    parcel: DerivedParcel | GeoreferencedParcel | TransformedParcel,
+) -> tuple[Point, ...]:
     points = list(parcel.vertices)
     if not _same_point(points[-1], parcel.final_endpoint):
         points.append(parcel.final_endpoint)
@@ -41,19 +46,33 @@ def _export_ring(parcel: DerivedParcel | GeoreferencedParcel) -> tuple[Point, ..
     return tuple(points)
 
 
-def _properties(parcel: DerivedParcel | GeoreferencedParcel) -> dict[str, Any]:
-    source = parcel.local if isinstance(parcel, GeoreferencedParcel) else parcel
+def _properties(
+    parcel: DerivedParcel | GeoreferencedParcel | TransformedParcel,
+) -> dict[str, Any]:
+    source = (
+        parcel.local
+        if isinstance(parcel, GeoreferencedParcel | TransformedParcel)
+        else parcel
+    )
     properties: dict[str, Any] = {
         "ptr_version": source.record.ptr_version,
         "derived_from_ptr": True,
-        "georeferenced": isinstance(parcel, GeoreferencedParcel),
+        "georeferenced": isinstance(parcel, GeoreferencedParcel | TransformedParcel)
+        and parcel.crs is not None,
     }
     if source.record.name is not None:
         properties["name"] = source.record.name
     if source.record.record_id is not None:
         properties["record_id"] = source.record.record_id
-    if isinstance(parcel, GeoreferencedParcel):
+    if (
+        isinstance(parcel, GeoreferencedParcel | TransformedParcel)
+        and parcel.crs is not None
+    ):
         properties["crs"] = parcel.crs
+    if isinstance(parcel, TransformedParcel):
+        properties["transforms"] = [
+            step.to_mapping() for step in parcel.transform_steps
+        ]
     return properties
 
 

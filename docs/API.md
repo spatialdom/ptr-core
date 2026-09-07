@@ -71,6 +71,19 @@ and gap distance. It uses Shapely/GEOS behind the PTR Core API for robust
 polygon relationships. Tolerances are explicit inputs and classify near
 relationships; parcel geometries are not snapped or repaired.
 
+## Transforms
+
+- `translate(parcel, dx=..., dy=...)` returns `TransformedParcel`.
+- `rotate(parcel, angle_degrees=..., origin=Point(...))` returns
+  `TransformedParcel`.
+- `transform_crs(parcel, source_crs="...", target_crs="...")` returns
+  `TransformedParcel`.
+
+Translation and rotation are local rigid-body operations and do not rescale
+survey distances. CRS transformation requires explicit source and target CRS
+definitions and records reproducible transform metadata. Transforms return
+separate geometry objects; they never edit the source PTR record.
+
 ## Exports
 
 - `to_geojson(parcel)` returns a GeoJSON Feature dictionary.

@@ -27,6 +27,7 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
+  "pyproj>=3.6",
   "shapely>=2.0",
 ]
 
@@ -63,5 +64,5 @@ strict = true
 packages = ["ptr_core"]
 
 [[tool.mypy.overrides]]
-module = ["shapely.*"]
+module = ["pyproj.*", "shapely.*"]
 ignore_missing_imports = true

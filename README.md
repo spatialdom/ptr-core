@@ -137,6 +137,24 @@ Numerical tolerances default to `1e-9` metres for closure and `1e-9` square
 metres for area QA classification. These tolerances classify derived QA
 findings only; they do not alter documentary measurements.
 
+## Comparison
+
+```python
+from ptr_core import compare_parcels
+
+comparison = compare_parcels(
+    parcel_a,
+    parcel_b,
+    distance_tolerance=0.01,
+    area_tolerance=0.01,
+)
+```
+
+Comparison results expose documentary equality, course differences, area and
+perimeter deltas, centroid translation, vertex/boundary distance metrics, and
+frame compatibility. They provide evidence for applications; they do not decide
+legal identity or cadastral correctness.
+
 ## PTR v0.1 Input
 
 ```json

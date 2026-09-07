@@ -1,6 +1,12 @@
 """PTR Core public API."""
 
 from ptr_core.bearings import Bearing, BearingError, parse_bearing
+from ptr_core.comparisons import (
+    BoundingBox,
+    ComparisonResult,
+    CourseComparison,
+    compare_parcels,
+)
 from ptr_core.errors import (
     PTRError,
     PTRParseError,
@@ -39,8 +45,11 @@ __all__ = [
     "Bearing",
     "BearingError",
     "AreaComparison",
+    "BoundingBox",
     "Closure",
+    "ComparisonResult",
     "Course",
+    "CourseComparison",
     "DerivedParcel",
     "Diagnostic",
     "GeoreferencedParcel",
@@ -56,6 +65,7 @@ __all__ = [
     "Severity",
     "ValidationResult",
     "Vector",
+    "compare_parcels",
     "compute_metrics",
     "course_to_vector",
     "dump_ptr",

@@ -44,6 +44,22 @@ structured `unsupported_ptr_version` diagnostic.
 Local axes are X/Easting positive east and Y/Northing positive north. Point 1 is
 placed at `(0, 0)` for local reconstruction only.
 
+## Comparison
+
+- `compare_parcels(left, right, distance_tolerance=..., area_tolerance=...)`
+  returns `ComparisonResult`.
+
+Comparison reports documentary equality, course-by-course differences, area and
+perimeter differences, translation/centroid differences, vertex and boundary
+distance metrics, and bounding-box overlap where frames are compatible.
+
+Spatial comparisons are limited to local-vs-local parcels or georeferenced
+parcels with the same CRS. Mixed local/georeferenced parcels or differing CRS
+values return structured incompatibility instead of guessing a transformation.
+
+Comparison never declares legal identity, ownership, cadastral correctness, or
+authoritative sameness.
+
 ## Exports
 
 - `to_geojson(parcel)` returns a GeoJSON Feature dictionary.

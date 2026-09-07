@@ -90,6 +90,31 @@ Area is computed with the shoelace formula over the reconstructed path and an
 implicit closing segment back to Point 1. Misclosure is reported separately; the
 traverse is not snapped, adjusted, balanced, or redistributed.
 
+## QA, Export, And Georeferencing
+
+```python
+from ptr_core import Point, georeference, qa_report, to_geojson, to_wkt
+
+report = qa_report(record).to_mapping()
+
+local_feature = to_geojson(parcel)
+local_wkt = to_wkt(parcel)
+
+referenced = georeference(
+    parcel,
+    tie_point=Point(500000.0, 1600000.0),
+    crs="EPSG:32651",
+)
+referenced_feature = to_geojson(referenced)
+```
+
+QA reports combine validation, metrics, and geometric findings while keeping
+documentary validity separate from derived QA warnings. GeoJSON and WKT exports
+are derived interchange outputs, not replacements for `.ptr`.
+
+Local exports do not include or invent a CRS. Referenced exports require caller
+supplied control coordinates, a PTR `tie_line`, and an explicit CRS identifier.
+
 ## PTR v0.1 Input
 
 ```json

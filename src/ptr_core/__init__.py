@@ -2,6 +2,7 @@
 
 from ptr_core.bearings import Bearing, BearingError, parse_bearing
 from ptr_core.errors import PTRParseError, PTRSerializationError
+from ptr_core.exports import to_geojson, to_wkt
 from ptr_core.geometry import (
     AreaComparison,
     Closure,
@@ -13,6 +14,11 @@ from ptr_core.geometry import (
     course_to_vector,
     reconstruct,
 )
+from ptr_core.georeferencing import (
+    GeoreferencedParcel,
+    GeoreferencingError,
+    georeference,
+)
 from ptr_core.io import (
     dump_ptr,
     dumps_ptr,
@@ -21,6 +27,7 @@ from ptr_core.io import (
     load_ptr_text,
 )
 from ptr_core.models import Course, PTRRecord
+from ptr_core.qa import QAReport, qa_report
 from ptr_core.validation import Diagnostic, Severity, ValidationResult, validate
 
 __all__ = [
@@ -31,11 +38,14 @@ __all__ = [
     "Course",
     "DerivedParcel",
     "Diagnostic",
+    "GeoreferencedParcel",
+    "GeoreferencingError",
     "ParcelMetrics",
     "PTRRecord",
     "PTRParseError",
     "PTRSerializationError",
     "Point",
+    "QAReport",
     "Severity",
     "ValidationResult",
     "Vector",
@@ -43,11 +53,15 @@ __all__ = [
     "course_to_vector",
     "dump_ptr",
     "dumps_ptr",
+    "georeference",
     "load_ptr",
     "load_ptr_mapping",
     "load_ptr_text",
     "parse_bearing",
+    "qa_report",
     "reconstruct",
+    "to_geojson",
+    "to_wkt",
     "validate",
 ]
 

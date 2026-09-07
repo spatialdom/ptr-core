@@ -4,7 +4,7 @@ PTR Core is the reference Python engine for Parcel Truth Records (PTR). PTR
 defines the parcel record language; PTR Core implements deterministic parsing,
 normalization, validation, and later parcel computation for that language.
 
-Status: early development, PTR v0.1 baseline.
+Status: PTR Core v0.1.0 release candidate for PTR specification v0.1.
 
 PTR Core is designed as a reusable library for Parcel Plotter, PTR Studio, QGIS
 integrations, SPARTA, Survey Kit, APIs, CLIs, and tests. It has no Django, web
@@ -63,10 +63,28 @@ Implemented foundation:
   conformance;
 - local Cartesian course-vector conversion, traverse reconstruction, closure,
   perimeter, area, declared-area comparison, and geometric QA findings;
+- structured QA reports, GeoJSON/WKT export, and explicit tie-point
+  georeferencing;
+- vendored PTR v0.1 conformance corpus tests;
 - CI for tests, linting, and type checking.
 
-Exports and georeferencing are planned follow-on layers. PTR Core does not
-silently alter documentary courses to force geometric closure.
+PTR Core does not silently alter documentary courses to force geometric closure.
+It contains no application-specific UI, database, cloud, OCR, ownership,
+taxation, zoning, or other contextual logic.
+
+## Public API
+
+The v0.1 public API is exported from `ptr_core`; applications should not need to
+import internal modules. See `docs/API.md` for the entry points, return objects,
+exception hierarchy, and `0.x` stability expectations.
+
+PTR Core currently supports PTR specification versions:
+
+```python
+from ptr_core import SUPPORTED_PTR_VERSIONS
+
+assert SUPPORTED_PTR_VERSIONS == ("0.1",)
+```
 
 ## Geometry
 
@@ -115,6 +133,10 @@ are derived interchange outputs, not replacements for `.ptr`.
 Local exports do not include or invent a CRS. Referenced exports require caller
 supplied control coordinates, a PTR `tie_line`, and an explicit CRS identifier.
 
+Numerical tolerances default to `1e-9` metres for closure and `1e-9` square
+metres for area QA classification. These tolerances classify derived QA
+findings only; they do not alter documentary measurements.
+
 ## PTR v0.1 Input
 
 ```json
@@ -155,4 +177,4 @@ or invalidate documentary source truth.
 
 ## License
 
-Licensing is not finalized for the first public release. See `LICENSE`.
+PTR Core is released under the MIT License. See `LICENSE`.

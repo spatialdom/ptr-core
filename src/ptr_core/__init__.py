@@ -1,7 +1,12 @@
 """PTR Core public API."""
 
 from ptr_core.bearings import Bearing, BearingError, parse_bearing
-from ptr_core.errors import PTRParseError, PTRSerializationError
+from ptr_core.errors import (
+    PTRError,
+    PTRParseError,
+    PTRSerializationError,
+    PTRUnsupportedVersionError,
+)
 from ptr_core.exports import to_geojson, to_wkt
 from ptr_core.geometry import (
     AreaComparison,
@@ -41,9 +46,11 @@ __all__ = [
     "GeoreferencedParcel",
     "GeoreferencingError",
     "ParcelMetrics",
+    "PTRError",
     "PTRRecord",
     "PTRParseError",
     "PTRSerializationError",
+    "PTRUnsupportedVersionError",
     "Point",
     "QAReport",
     "Severity",

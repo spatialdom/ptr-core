@@ -1,0 +1,10 @@
+{
+  "ptr_version": "0.1",
+  "name": "Scientific notation distance",
+  "lines": [
+    ["N", 1e2],
+    ["E", 8e1],
+    ["S", 100.0],
+    ["W", 80.0]
+  ]
+}

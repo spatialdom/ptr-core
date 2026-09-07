@@ -218,7 +218,9 @@ def _qa_findings(
                 Severity.WARNING,
             )
         )
-    if _has_duplicate_vertices((*vertices, final_endpoint), closure_tolerance):
+    path = (*vertices, final_endpoint)
+    has_duplicate_vertices = _has_duplicate_vertices(path, closure_tolerance)
+    if has_duplicate_vertices:
         findings.append(
             Diagnostic(
                 "geometric_qa",
@@ -228,7 +230,7 @@ def _qa_findings(
                 Severity.WARNING,
             )
         )
-    if _has_self_intersection((*vertices, final_endpoint), closure_tolerance):
+    if has_duplicate_vertices or _has_self_intersection(path, closure_tolerance):
         findings.append(
             Diagnostic(
                 "geometric_qa",

@@ -1,0 +1,12 @@
+{
+  "ptr_version": "0.1",
+  "name": "Tie point example",
+  "tie_point": "BLLM No. 1, Cad-123",
+  "tie_line": ["S11-44W", 2351.0],
+  "lines": [
+    ["N", 30.0],
+    ["E", 20.0],
+    ["S", 30.0],
+    ["W", 20.0]
+  ]
+}

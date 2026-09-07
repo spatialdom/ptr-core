@@ -1,0 +1,10 @@
+{
+  "ptr_version": "0.1",
+  "name": "Non-closing parcel",
+  "lines": [
+    ["N", 100.0],
+    ["E", 80.0],
+    ["S", 100.0],
+    ["W", 79.5]
+  ]
+}

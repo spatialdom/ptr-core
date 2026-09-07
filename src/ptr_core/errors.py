@@ -12,3 +12,6 @@ class PTRParseError(PTRError, ValueError):
 class PTRSerializationError(PTRError, ValueError):
     """Raised when a PTR record cannot be serialized safely."""
 
+
+class PTRUnsupportedVersionError(PTRParseError):
+    """Raised when a PTR record uses an unsupported PTR specification version."""

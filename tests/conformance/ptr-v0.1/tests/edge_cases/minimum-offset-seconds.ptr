@@ -1,0 +1,9 @@
+{
+  "ptr_version": "0.1",
+  "name": "Minimum nonzero quadrant offset",
+  "lines": [
+    ["N0-00-01E", 10.0],
+    ["S89-59-59E", 10.0],
+    ["S45-00W", 14.1421356237]
+  ]
+}

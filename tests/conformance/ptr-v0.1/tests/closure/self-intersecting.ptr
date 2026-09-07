@@ -1,0 +1,10 @@
+{
+  "ptr_version": "0.1",
+  "name": "Self-intersecting parcel",
+  "lines": [
+    ["N45-00E", 100.0],
+    ["S45-00E", 100.0],
+    ["N45-00W", 100.0],
+    ["S45-00W", 100.0]
+  ]
+}

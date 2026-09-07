@@ -1,0 +1,14 @@
+{
+  "ptr_version": "0.1",
+  "name": "Lot 2173",
+  "record_id": "cad-123-lot-2173",
+  "tie_point": "BLLM No. 1, Cad-123",
+  "tie_line": ["S11-44W", 2351.0],
+  "lines": [
+    ["N", 100.0],
+    ["E", 80.0],
+    ["S", 100.0],
+    ["W", 80.0]
+  ],
+  "declared_area": 8000.0
+}

@@ -9,7 +9,11 @@ from pathlib import Path
 from typing import Any
 
 from ptr_core.bearings import BearingError, parse_bearing
-from ptr_core.errors import PTRParseError, PTRSerializationError
+from ptr_core.errors import (
+    PTRParseError,
+    PTRSerializationError,
+    PTRUnsupportedVersionError,
+)
 from ptr_core.models import Course, PTRRecord
 from ptr_core.validation import validate_mapping
 
@@ -62,6 +66,16 @@ def load_ptr_mapping(
 
     result = validate_mapping(mapping, accept_noncanonical_bearings=normalize_bearings)
     if not result.conforms:
+        unsupported = next(
+            (
+                diagnostic
+                for diagnostic in result.errors
+                if diagnostic.code == "unsupported_ptr_version"
+            ),
+            None,
+        )
+        if unsupported is not None:
+            raise PTRUnsupportedVersionError(unsupported.message)
         details = "; ".join(d.message for d in result.errors)
         raise PTRParseError(details or "PTR mapping is not conforming.")
 

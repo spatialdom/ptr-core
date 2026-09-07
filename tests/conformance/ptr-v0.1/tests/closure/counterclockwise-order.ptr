@@ -1,0 +1,10 @@
+{
+  "ptr_version": "0.1",
+  "name": "Counterclockwise parcel",
+  "lines": [
+    ["E", 80.0],
+    ["N", 100.0],
+    ["W", 80.0],
+    ["S", 100.0]
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "ptr_version": "0.1",
+  "name": "Quadrant triangle",
+  "lines": [
+    ["N45-00E", 10.0],
+    ["S45-00E", 10.0],
+    ["W", 14.1421356237]
+  ]
+}

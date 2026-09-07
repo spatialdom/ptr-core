@@ -1,0 +1,10 @@
+{
+  "ptr_version": "0.1",
+  "name": "Cardinal square",
+  "lines": [
+    ["N", 20.0],
+    ["E", 20.0],
+    ["S", 20.0],
+    ["W", 20.0]
+  ]
+}

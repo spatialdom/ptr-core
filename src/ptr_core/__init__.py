@@ -39,6 +39,7 @@ from ptr_core.io import (
 )
 from ptr_core.models import Course, PTRRecord
 from ptr_core.qa import QAReport, qa_report
+from ptr_core.topology import TopologyResult, analyze_topology
 from ptr_core.validation import Diagnostic, Severity, ValidationResult, validate
 
 __all__ = [
@@ -63,8 +64,10 @@ __all__ = [
     "Point",
     "QAReport",
     "Severity",
+    "TopologyResult",
     "ValidationResult",
     "Vector",
+    "analyze_topology",
     "compare_parcels",
     "compute_metrics",
     "course_to_vector",

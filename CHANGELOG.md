@@ -17,6 +17,8 @@ Implemented:
 - GeoJSON and WKT export for derived parcel geometry.
 - Explicit tie-point georeferencing with caller-supplied CRS.
 - Parcel-to-parcel comparison primitives with explicit tolerances.
+- Parcel topology primitives for overlap, containment, adjacency, shared
+  boundary length, gaps, and equivalent geometry checks.
 - Unit and vendored PTR v0.1 conformance tests.
 
 Known limitations:

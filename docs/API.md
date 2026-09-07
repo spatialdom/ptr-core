@@ -60,6 +60,17 @@ values return structured incompatibility instead of guessing a transformation.
 Comparison never declares legal identity, ownership, cadastral correctness, or
 authoritative sameness.
 
+## Topology
+
+- `analyze_topology(left, right, distance_tolerance=..., area_tolerance=...)`
+  returns `TopologyResult`.
+
+Topology analysis reports compatible-frame status, equality, containment,
+overlap area, point-touching, shared-edge adjacency, shared-boundary length/WKT,
+and gap distance. It uses Shapely/GEOS behind the PTR Core API for robust
+polygon relationships. Tolerances are explicit inputs and classify near
+relationships; parcel geometries are not snapped or repaired.
+
 ## Exports
 
 - `to_geojson(parcel)` returns a GeoJSON Feature dictionary.

@@ -155,6 +155,24 @@ perimeter deltas, centroid translation, vertex/boundary distance metrics, and
 frame compatibility. They provide evidence for applications; they do not decide
 legal identity or cadastral correctness.
 
+## Topology
+
+```python
+from ptr_core import analyze_topology
+
+topology = analyze_topology(
+    parcel_a,
+    parcel_b,
+    distance_tolerance=0.01,
+    area_tolerance=0.01,
+)
+```
+
+Topology results expose compatible-frame status, overlap area, containment,
+point-touching, shared-edge adjacency, shared-boundary length, and gap distance.
+PTR Core uses Shapely/GEOS behind this API for polygon topology; tolerances are
+explicit and no parcel geometry is automatically snapped or repaired.
+
 ## PTR v0.1 Input
 
 ```json

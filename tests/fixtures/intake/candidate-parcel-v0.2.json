@@ -1,0 +1,243 @@
+{
+  "address_locality": [
+    {
+      "candidate_id": "locality",
+      "confidence": 0.4,
+      "conflict_group": null,
+      "document_text": null,
+      "documentary_number": null,
+      "extraction_id": "run-1",
+      "raw_text": "Synthetic locality",
+      "sources": [
+        {
+          "document_id": "doc-pdf",
+          "page_id": "p2",
+          "region": null,
+          "text_span": null
+        }
+      ],
+      "status": "ambiguous"
+    }
+  ],
+  "parcel_identifier": [
+    {
+      "candidate_id": "lot",
+      "confidence": null,
+      "conflict_group": null,
+      "document_text": null,
+      "documentary_number": null,
+      "extraction_id": "run-1",
+      "raw_text": "Synthetic Lot A",
+      "sources": [
+        {
+          "document_id": "doc-pdf",
+          "page_id": "p2",
+          "region": null,
+          "text_span": null
+        }
+      ],
+      "status": "found"
+    }
+  ],
+  "provenance": [
+    {
+      "configuration_version": "config-1",
+      "extraction_id": "run-1",
+      "extractor_family": "synthetic-fixture",
+      "generated_at": "2026-10-03T00:00:00Z",
+      "method": "combined",
+      "model_version_or_checkpoint": "fixture-v1",
+      "pipeline_version": "synthetic-0.1"
+    }
+  ],
+  "reference_point": [
+    {
+      "candidate_id": "reference",
+      "confidence": null,
+      "conflict_group": null,
+      "document_text": null,
+      "documentary_number": null,
+      "extraction_id": "run-1",
+      "raw_text": null,
+      "sources": [
+        {
+          "document_id": "doc-pdf",
+          "page_id": "p2",
+          "region": null,
+          "text_span": null
+        }
+      ],
+      "status": "not_found"
+    }
+  ],
+  "schema_version": "0.2",
+  "source_bundle": {
+    "bundle_id": "synthetic-bundle",
+    "documents": [
+      {
+        "document_id": "doc-pdf",
+        "media_type": "application/pdf"
+      },
+      {
+        "document_id": "doc-photo",
+        "media_type": "image/png"
+      }
+    ],
+    "ordered_pages": [
+      {
+        "document_id": "doc-pdf",
+        "media_type": "application/pdf",
+        "metadata": {
+          "height_pixels": null,
+          "width_pixels": null
+        },
+        "page_id": "p2",
+        "page_index": 1
+      },
+      {
+        "document_id": "doc-pdf",
+        "media_type": "application/pdf",
+        "metadata": {
+          "height_pixels": null,
+          "width_pixels": null
+        },
+        "page_id": "p1",
+        "page_index": 0
+      },
+      {
+        "document_id": "doc-photo",
+        "media_type": "image/png",
+        "metadata": {
+          "height_pixels": 1200,
+          "width_pixels": 800
+        },
+        "page_id": "p3",
+        "page_index": 0
+      }
+    ]
+  },
+  "stated_area": [
+    {
+      "candidate_id": "area-a",
+      "confidence": null,
+      "conflict_group": "area-conflict",
+      "document_text": null,
+      "documentary_number": null,
+      "extraction_id": "run-1",
+      "raw_text": "100 square meters",
+      "sources": [
+        {
+          "document_id": "doc-pdf",
+          "page_id": "p2",
+          "region": null,
+          "text_span": null
+        }
+      ],
+      "status": "conflicting"
+    },
+    {
+      "candidate_id": "area-b",
+      "confidence": null,
+      "conflict_group": "area-conflict",
+      "document_text": null,
+      "documentary_number": null,
+      "extraction_id": "run-1",
+      "raw_text": "120 square meters",
+      "sources": [
+        {
+          "document_id": "doc-photo",
+          "page_id": "p3",
+          "region": {
+            "bounding_box": {
+              "x_max": 0.9,
+              "x_min": 0.1,
+              "y_max": 0.4,
+              "y_min": 0.2
+            },
+            "page_id": "p3"
+          },
+          "text_span": null
+        }
+      ],
+      "status": "conflicting"
+    }
+  ],
+  "technical_description": [
+    {
+      "candidate_id": "description",
+      "confidence": null,
+      "conflict_group": null,
+      "document_text": "S 31° 18' E 10.0 m\nN 20° W 12 m",
+      "documentary_number": null,
+      "extraction_id": "run-1",
+      "raw_text": "  S 31° 18' E 10.0 m\nN 20° W 12 m  ",
+      "sources": [
+        {
+          "document_id": "doc-pdf",
+          "page_id": "p2",
+          "region": null,
+          "text_span": null
+        },
+        {
+          "document_id": "doc-pdf",
+          "page_id": "p1",
+          "region": null,
+          "text_span": null
+        }
+      ],
+      "status": "found"
+    }
+  ],
+  "tie_line": [
+    {
+      "candidate_id": "tie",
+      "confidence": null,
+      "conflict_group": null,
+      "document_text": null,
+      "documentary_number": null,
+      "extraction_id": "run-1",
+      "raw_text": "N 10° E 5 m",
+      "sources": [
+        {
+          "document_id": "doc-pdf",
+          "page_id": "p2",
+          "region": null,
+          "text_span": null
+        }
+      ],
+      "status": "found"
+    }
+  ],
+  "warnings": [
+    {
+      "candidate_ids": [
+        "area-a",
+        "area-b"
+      ],
+      "code": "conflicting_stated_area",
+      "message": "Synthetic area alternatives differ.",
+      "sources": [
+        {
+          "document_id": "doc-pdf",
+          "page_id": "p2",
+          "region": null,
+          "text_span": null
+        },
+        {
+          "document_id": "doc-photo",
+          "page_id": "p3",
+          "region": {
+            "bounding_box": {
+              "x_max": 0.9,
+              "x_min": 0.1,
+              "y_max": 0.4,
+              "y_min": 0.2
+            },
+            "page_id": "p3"
+          },
+          "text_span": null
+        }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,10 @@ from dataclasses import dataclass
 class BearingError(ValueError):
     """Raised when a bearing is invalid or ambiguous."""
 
+    def __init__(self, message: str, *, code: str = "invalid_bearing") -> None:
+        super().__init__(message)
+        self.code = code
+
 
 _CANONICAL_RE = re.compile(
     r"^(?P<cardinal>[NESW])$|"
@@ -71,7 +75,10 @@ def parse_bearing(value: str, *, normalize: bool = True) -> Bearing:
     canonical = value if _is_canonical_text(value) else None
     if canonical is None:
         if not normalize:
-            raise BearingError(f"Bearing is not canonical PTR v0.1 syntax: {value!r}.")
+            raise BearingError(
+                f"Bearing is not canonical PTR v0.1 syntax: {value!r}.",
+                code="noncanonical_bearing",
+            )
         canonical = _normalize_bearing_text(value)
 
     return _bearing_from_canonical(canonical)
@@ -100,6 +107,21 @@ def _normalize_bearing_text(value: str) -> str:
     upper = text.upper()
     if upper in {"N", "E", "S", "W"}:
         return upper
+
+    words = " ".join(upper.split())
+    cardinals = {"NORTH": "N", "EAST": "E", "SOUTH": "S", "WEST": "W"}
+    aliases = {**cardinals, **{f"DUE {k}": v for k, v in cardinals.items()}}
+    if words in aliases:
+        return aliases[words]
+
+    # Documentary punctuation is explicit syntax, never an OCR correction.
+    upper = re.sub(r"^([NS])[.,]+\s*", r"\1 ", upper)
+    upper = re.sub(r"([EW])[.,]+$", r"\1", upper)
+    upper = re.sub(r"\b(?:DEGREES?|DEG)[.,]?", "DEG", upper)
+    upper = re.sub(r"\b(?:MINUTES?|MIN)\.?", "M", upper)
+    upper = upper.replace("\u2018", "'").replace("\u2019", "'")
+    # Legacy double apostrophes/quotes mark minutes only directly before E/W.
+    upper = re.sub(r"(?:''|\")\s*(?=[EW]$)", "'", upper)
 
     compact = re.sub(r"\s+", "", upper)
     if _AMBIGUOUS_RE.match(compact):

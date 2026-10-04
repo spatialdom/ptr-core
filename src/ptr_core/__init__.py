@@ -14,6 +14,14 @@ from ptr_core.errors import (
     PTRUnsupportedVersionError,
 )
 from ptr_core.exports import to_geojson, to_wkt
+from ptr_core.formatting import (
+    CourseRow,
+    GeneratedDescription,
+    ManualTableProjection,
+    PTRFormattingError,
+    format_technical_description,
+    project_manual_table,
+)
 from ptr_core.geometry import (
     AreaComparison,
     Closure,
@@ -35,6 +43,13 @@ from ptr_core.georeferencing import (
     GeoreferencingError,
     georeference,
 )
+from ptr_core.intake import (
+    CandidateMapping,
+    IntakeResult,
+    ParcelInput,
+    intake_candidate,
+    intake_parcel,
+)
 from ptr_core.io import (
     dump_ptr,
     dumps_ptr,
@@ -44,6 +59,16 @@ from ptr_core.io import (
 )
 from ptr_core.models import Course, PTRRecord
 from ptr_core.qa import QAReport, qa_report
+from ptr_core.technical_description import (
+    CourseParseError,
+    ParsedCourse,
+    ParsedValue,
+    SourceSpan,
+    TechnicalDescriptionResult,
+    parse_course,
+    parse_distance,
+    parse_technical_description,
+)
 from ptr_core.topology import TopologyResult, analyze_topology
 from ptr_core.transforms import (
     TransformedParcel,
@@ -58,6 +83,25 @@ from ptr_core.validation import Diagnostic, Severity, ValidationResult, validate
 __all__ = [
     "Bearing",
     "BearingError",
+    "CourseRow",
+    "GeneratedDescription",
+    "ManualTableProjection",
+    "PTRFormattingError",
+    "format_technical_description",
+    "project_manual_table",
+    "CandidateMapping",
+    "IntakeResult",
+    "ParcelInput",
+    "intake_candidate",
+    "intake_parcel",
+    "CourseParseError",
+    "ParsedCourse",
+    "ParsedValue",
+    "SourceSpan",
+    "TechnicalDescriptionResult",
+    "parse_course",
+    "parse_distance",
+    "parse_technical_description",
     "AreaComparison",
     "BoundingBox",
     "Closure",
@@ -107,5 +151,5 @@ __all__ = [
     "validate",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 SUPPORTED_PTR_VERSIONS = ("0.1",)

@@ -14,6 +14,14 @@ from ptr_core.errors import (
     PTRUnsupportedVersionError,
 )
 from ptr_core.exports import to_geojson, to_wkt
+from ptr_core.formatting import (
+    CourseRow,
+    GeneratedDescription,
+    ManualTableProjection,
+    PTRFormattingError,
+    format_technical_description,
+    project_manual_table,
+)
 from ptr_core.geometry import (
     AreaComparison,
     Closure,
@@ -75,6 +83,12 @@ from ptr_core.validation import Diagnostic, Severity, ValidationResult, validate
 __all__ = [
     "Bearing",
     "BearingError",
+    "CourseRow",
+    "GeneratedDescription",
+    "ManualTableProjection",
+    "PTRFormattingError",
+    "format_technical_description",
+    "project_manual_table",
     "CandidateMapping",
     "IntakeResult",
     "ParcelInput",

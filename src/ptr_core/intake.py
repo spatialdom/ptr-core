@@ -72,14 +72,9 @@ class IntakeResult:
                 }
                 for d in self.diagnostics
             ],
-            "rows": [
-                {
-                    "course": row.course.to_json_value() if row.course else None,
-                    "span": row.span.to_mapping(),
-                    "destination_point": row.destination_point,
-                    "returns_to_beginning": row.returns_to_beginning,
-                }
-                for row in self.rows
+            "rows": [row.to_mapping() for row in self.rows],
+            "descriptions": [
+                description.to_mapping() for description in self.descriptions
             ],
             "evidence": deepcopy(dict(self.evidence)),
         }

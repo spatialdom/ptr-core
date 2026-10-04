@@ -11,6 +11,10 @@
   evidence and diagnostics outside PTR. Conflicts and incomplete extraction
   cannot produce a record; geometric QA remains separate (#19).
 - Reject nonfinite distances and stated areas during PTR validation.
+- Add public generated-description and editable-table formatting without
+  rounding, reordering, geometry computation, or inferred closure (#24).
+  Preserve full metadata in structured projections and report prose omissions;
+  test parser/intake and extractor-fixture round trips.
 
 ## 0.1.0 - 2026-09-07
 

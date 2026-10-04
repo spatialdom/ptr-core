@@ -13,7 +13,7 @@ from typing import Any
 from ptr_core.bearings import BearingError, parse_bearing
 from ptr_core.errors import PTRParseError
 from ptr_core.models import Course
-from ptr_core.validation import Diagnostic, Severity
+from ptr_core.validation import Diagnostic, Severity, ValidationResult
 
 _NUMBER = re.compile(
     r"(?:[0-9]+|[1-9][0-9]{0,2}(?:,[0-9]{3})+)(?:\.[0-9]+)?"
@@ -39,6 +39,10 @@ _AREA = re.compile(
     r"(?:Stated area:|containing\s+an?\s+area\s+of)\s*"
     r"(?P<number>[^\s]+)\s+(?:square\s+(?:meters?|metres?)|sq\.?\s*m\.?|sqm|m2)"
     r"(?:,\s*more or less)?",
+    re.IGNORECASE,
+)
+_QUOTED_REFERENCE = re.compile(
+    r'(?:\bfrom\s+|\bReference point:\s*)(?P<quoted>"(?:\\.|[^"\\])*")',
     re.IGNORECASE,
 )
 
@@ -112,6 +116,18 @@ class ParsedCourse:
     reference_point: str | None = None
     diagnostics: tuple[Diagnostic, ...] = ()
 
+    def to_mapping(self) -> dict[str, Any]:
+        return {
+            "course": self.course.to_json_value() if self.course else None,
+            "span": self.span.to_mapping(),
+            "destination_point": self.destination_point,
+            "returns_to_beginning": self.returns_to_beginning,
+            "reference_point": self.reference_point,
+            "diagnostics": ValidationResult(self.diagnostics).to_mapping()[
+                "diagnostics"
+            ],
+        }
+
 
 @dataclass(frozen=True, slots=True)
 class ParsedValue:
@@ -127,6 +143,25 @@ class TechnicalDescriptionResult:
     stated_areas: tuple[ParsedValue, ...] = ()
     unparsed_spans: tuple[SourceSpan, ...] = ()
     diagnostics: tuple[Diagnostic, ...] = ()
+
+    def to_mapping(self) -> dict[str, Any]:
+        return {
+            "complete": self.complete,
+            "rows": [row.to_mapping() for row in self.rows],
+            "tie_lines": [row.to_mapping() for row in self.tie_lines],
+            "reference_points": [
+                {"value": value.value, "span": value.span.to_mapping()}
+                for value in self.reference_points
+            ],
+            "stated_areas": [
+                {"value": value.value, "span": value.span.to_mapping()}
+                for value in self.stated_areas
+            ],
+            "unparsed_spans": [span.to_mapping() for span in self.unparsed_spans],
+            "diagnostics": ValidationResult(self.diagnostics).to_mapping()[
+                "diagnostics"
+            ],
+        }
 
     @property
     def courses(self) -> tuple[Course, ...]:
@@ -149,9 +184,11 @@ def _diagnostic(code: str, message: str, span: SourceSpan) -> Diagnostic:
 def _reference(text: str) -> str:
     if text.startswith('"'):
         value = json.loads(text)
-        if not isinstance(value, str) or not value.strip():
-            raise ValueError("Reference point must be nonblank text.")
+        if not isinstance(value, str):
+            raise ValueError("Reference point must be text.")
         return value
+    if not text:
+        raise ValueError("Reference point text is missing.")
     return text
 
 
@@ -203,7 +240,14 @@ def parse_technical_description(
     areas: list[ParsedValue] = []
     unparsed: list[SourceSpan] = []
     diagnostics: list[Diagnostic] = []
-    anchors = list(_ANCHOR.finditer(text))
+    # JSON-quoted reference metadata can contain semicolons and anchor words.
+    # Mask only those strings, preserving all original offsets and course quotes.
+    masked = list(text)
+    for quoted in _QUOTED_REFERENCE.finditer(text):
+        start, end = quoted.span("quoted")
+        masked[start:end] = " " * (end - start)
+    scan_text = "".join(masked)
+    anchors = list(_ANCHOR.finditer(scan_text))
     ranges: list[tuple[int, int, bool]] = []
     if anchors:
         cursor = 0
@@ -213,7 +257,7 @@ def parse_technical_description(
             limit = (
                 anchors[index + 1].start() if index + 1 < len(anchors) else len(text)
             )
-            separator = text.find(";", anchor.start(), limit)
+            separator = scan_text.find(";", anchor.start(), limit)
             end = separator if separator >= 0 else limit
             ranges.append((anchor.start(), end, True))
             cursor = end
@@ -266,8 +310,6 @@ def parse_technical_description(
         elif re.match(r"Reference point:", body, re.I):
             try:
                 value = _reference(body.split(":", 1)[1].strip())
-                if not value:
-                    raise ValueError("Empty reference")
                 references.append(ParsedValue(value, span))
             except ValueError:
                 unparsed.append(span)
@@ -306,7 +348,7 @@ def parse_technical_description(
                     Severity.INFO,
                 )
             )
-    if re.search(r"\b(?:continued on|continuation|to be continued)\b", text, re.I):
+    if re.search(r"\b(?:continued on|continuation|to be continued)\b", scan_text, re.I):
         diagnostics.append(
             Diagnostic(
                 "interpretation",

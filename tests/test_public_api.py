@@ -12,6 +12,13 @@ def test_public_api_exports_expected_v01_entry_points():
         "dumps_ptr",
         "dump_ptr",
         "parse_bearing",
+        "parse_course",
+        "parse_distance",
+        "parse_technical_description",
+        "intake_parcel",
+        "intake_candidate",
+        "format_technical_description",
+        "project_manual_table",
         "validate",
         "course_to_vector",
         "reconstruct",
@@ -29,6 +36,7 @@ def test_public_api_exports_expected_v01_entry_points():
 
     assert expected <= set(ptr_core.__all__)
     assert ptr_core.SUPPORTED_PTR_VERSIONS == ("0.1",)
+    assert ptr_core.__version__ == "0.1.1"
 
 
 def test_unsupported_ptr_version_has_explicit_error_and_diagnostic():

@@ -75,6 +75,9 @@ it does not assert closure. Stable interpretation categories include
 `invalid_stated_area`, `too_few_courses`, and `unresolved_continuation`.
 Uninterpreted context is retained with informational `unparsed_context`.
 No ordering, destination, return, geometry or missing course is inferred.
+`TechnicalDescriptionResult.to_mapping()` includes partial boundary rows,
+separate ties/values, raw unparsed spans, and diagnostics for neutral review
+handoffs. `IntakeResult.to_mapping()` includes these description mappings too.
 
 ## Candidate And Manual Intake
 
@@ -146,6 +149,51 @@ Pin downstream integrations to `ptr-core==0.1.1` once published (or to the
 reviewed commit of this branch before publication). Supported PTR stays `0.1`;
 CandidateParcel `0.2` is a separate input schema. Core does not change downstream
 review state or write original transcriptions.
+
+## Generated Description And Editable Table
+
+- `format_technical_description(record)` returns `GeneratedDescription` with
+  `text`, `omitted_fields`, and warning `diagnostics`. The text identifies itself
+  as generated and preserves boundary order, cardinals, quadrants, seconds,
+  numeric distances, tie point/tie line, and numeric stated area. It performs no
+  geometry computation and never infers a return to the point of beginning.
+  Numeric values use Python's round-trip representation without extra rounding.
+- `project_manual_table(record)` returns `ManualTableProjection`: ordered
+  canonical `CourseRow` values, supporting `metadata`, and unknown `extensions`
+  separately. `to_mapping()` returns library-neutral editable row dictionaries;
+  `to_ptr_mapping()` preserves the full record, including extension values.
+- `PTRFormattingError.diagnostics` explains invalid records or unsafe
+  serialization. Its parent is `PTRParseError`.
+
+Prose deliberately omits `name`, `record_id`, and extensions, reporting their
+paths in `omitted_fields` and `metadata_not_in_prose`. The structured projection
+preserves them. Destination labels and return wording are not stored in PTR and
+cannot be recovered from a record. Decimal spelling and trailing zeroes from
+original text are also not stored by PTRRecord's numeric values. These APIs
+preserve represented values, not original spelling, source transcripts,
+signatures, or certification.
+
+Reference strings use JSON quoting, so semicolons, quotation marks, line breaks,
+Unicode, and words such as `thence` within reference metadata survive parsing.
+The generated text round-trips through `parse_technical_description` and
+`intake_parcel` for supported boundary/reference/tie/area semantics. Use the
+table's `to_ptr_mapping()` when retaining names, record IDs, and extensions.
+Projection does not add fields to PTR or write source documents.
+
+```python
+from ptr_core import (
+    format_technical_description, intake_parcel, load_ptr_mapping,
+    project_manual_table,
+)
+
+# record is an existing conforming PTRRecord.
+generated = format_technical_description(record)
+round_trip = intake_parcel(generated.text)
+assert round_trip.record.lines == record.lines
+assert round_trip.record.tie_line == record.tie_line
+table = project_manual_table(record)
+assert load_ptr_mapping(table.to_ptr_mapping()) == record
+```
 
 ## Validation And QA
 
@@ -241,6 +289,8 @@ other CRS.
 - `PTRUnsupportedVersionError`: unsupported `ptr_version`.
 - `PTRSerializationError`: unsafe serialization failure.
 - `BearingError`: invalid or ambiguous bearing input.
+- `CourseParseError`: invalid manual course/distance input, with a stable `code`.
+- `PTRFormattingError`: invalid record projection, with structured `diagnostics`.
 - `GeoreferencingError`: missing explicit georeferencing inputs.
 
 Validation, closure, self-intersection, area difference, and similar parcel QA

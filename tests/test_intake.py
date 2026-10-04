@@ -310,3 +310,22 @@ def test_unresolved_provenance_and_sources_are_explicit():
     assert {"invalid_provenance", "invalid_source_reference"} <= {
         d.code for d in result.diagnostics
     }
+
+
+def test_review_handoff_keeps_unparsed_text_tie_sources_and_row_diagnostics():
+    candidate = assembled_candidate()
+    td = candidate["technical_description"][0]
+    td["raw_text"] = (
+        "Beginning at point 1, being Due West, 25 m from BLLM No. 1; "
+        "thence North, 10 m; thence undeciphered course; "
+        "thence South, 10 m;"
+    )
+    result = intake_candidate(candidate)
+    handoff = json.loads(json.dumps(result.to_mapping()))
+    assert handoff["record"] is None
+    assert handoff["rows"][1]["course"] is None
+    assert handoff["rows"][1]["diagnostics"]
+    description = handoff["descriptions"][0]
+    assert "undeciphered" in description["unparsed_spans"][0]["text"]
+    assert description["tie_lines"][0]["span"]["candidate_id"] == td["candidate_id"]
+    assert handoff["evidence"] == candidate

@@ -1,12 +1,16 @@
 # Changelog
 
-## 0.1.1 - 2026-10-04
+## 0.1.1 - 2026-10-05
 
 - Accept explicit cardinal words and Due bearings in normalized input (#23);
   stored PTR v0.1 syntax remains strict. Expose stable bearing error codes.
 - Add shared technical-description and manual-course parsing, source-associated
   partial rows, tie/destination/continuation semantics, and migration fixtures
   (#22). Reject malformed grouping and OCR repairs explicitly.
+- Add CandidateParcel 0.2 and manual/structured intake, preserving source
+  evidence and diagnostics outside PTR. Conflicts and incomplete extraction
+  cannot produce a record; geometric QA remains separate (#19).
+- Reject nonfinite distances and stated areas during PTR validation.
 
 ## 0.1.0 - 2026-09-07
 

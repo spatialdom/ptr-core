@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
@@ -276,7 +277,11 @@ def _validate_positive_json_number(
             )
         )
         return
-    if value <= 0:
+    try:
+        finite = math.isfinite(value)
+    except OverflowError:
+        finite = False
+    if not finite or value <= 0:
         diagnostics.append(
             Diagnostic(
                 "semantic", f"{code_prefix}_not_positive", semantic_message, path

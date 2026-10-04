@@ -35,6 +35,13 @@ from ptr_core.georeferencing import (
     GeoreferencingError,
     georeference,
 )
+from ptr_core.intake import (
+    CandidateMapping,
+    IntakeResult,
+    ParcelInput,
+    intake_candidate,
+    intake_parcel,
+)
 from ptr_core.io import (
     dump_ptr,
     dumps_ptr,
@@ -68,6 +75,11 @@ from ptr_core.validation import Diagnostic, Severity, ValidationResult, validate
 __all__ = [
     "Bearing",
     "BearingError",
+    "CandidateMapping",
+    "IntakeResult",
+    "ParcelInput",
+    "intake_candidate",
+    "intake_parcel",
     "CourseParseError",
     "ParsedCourse",
     "ParsedValue",

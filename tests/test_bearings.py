@@ -64,3 +64,51 @@ def test_zero_seconds_normalize_to_omitted_seconds():
     assert parse_bearing("N68-28-00E").canonical == "N68-28E"
     assert not is_canonical_bearing("N68-28-00E")
 
+
+@pytest.mark.parametrize("word", ["North", "East", "South", "West"])
+@pytest.mark.parametrize("prefix", ["", "Due "])
+def test_explicit_cardinal_words(word, prefix):
+    value = " \t" + (prefix + word).swapcase().replace(" ", " \n ") + "  "
+    assert parse_bearing(value).canonical == word[0]
+    with pytest.raises(BearingError) as error:
+        parse_bearing(value, normalize=False)
+    assert error.value.code == "noncanonical_bearing"
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("N 45-30 E", "N45-30E"),
+        ("N45-30E", "N45-30E"),
+        ("N 45\u00b030\u2032 E", "N45-30E"),
+        ("N 45\u00b030\u2032 12\u2033 E", "N45-30-12E"),
+    ],
+)
+def test_review_quadrant_examples(value, expected):
+    assert parse_bearing(value).canonical == expected
+
+
+@pytest.mark.parametrize(
+    "value", ["DueEast", "Due N", "North East", "Eastward", "90", "Due West 10"]
+)
+def test_cardinal_allowlist_rejects_guesses(value):
+    with pytest.raises(BearingError) as error:
+        parse_bearing(value)
+    assert error.value.code == "invalid_bearing"
+
+
+def test_cardinal_aliases_in_mapping_and_tie_line():
+    from ptr_core import load_ptr_mapping
+
+    data = {
+        "ptr_version": "0.1",
+        "lines": [["North", 10], ["Due East", 10], ["South", 10]],
+        "tie_point": "Synthetic monument",
+        "tie_line": ["Due West", 25],
+    }
+    record = load_ptr_mapping(data, normalize_bearings=True)
+    assert record.tie_line.bearing.canonical == "W"
+    assert [c.bearing.canonical for c in record.lines] == ["N", "E", "S"]
+    with pytest.raises(ValueError):
+        load_ptr_mapping(data)
+

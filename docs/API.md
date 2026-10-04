@@ -27,6 +27,14 @@ structured `unsupported_ptr_version` diagnostic.
 - `parse_bearing(value, normalize=True)` returns an immutable `Bearing`.
 - `BearingError` is raised for invalid or ambiguous bearing input.
 
+With normalization enabled, the explicit case-insensitive words `North`, `East`,
+`South`, `West` and their `Due ` variants normalize to `N/E/S/W`; surrounding
+and intervening whitespace is ignored. Quadrants such as `N 45-30 E`, `N45-30E`,
+and `N 45°30′ E` use the existing parser, including whole-second precision.
+Unlabelled azimuths and ambiguous directions are rejected. `normalize=False`
+continues to require stored canonical PTR syntax. `BearingError.code` is
+`invalid_bearing`, or `noncanonical_bearing` for strict input rejection.
+
 ## Validation And QA
 
 - `validate(source)` returns `ValidationResult`; expected conformance failures

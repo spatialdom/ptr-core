@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 - 2026-10-04
+
+- Accept explicit cardinal words and Due bearings in normalized input (#23);
+  stored PTR v0.1 syntax remains strict. Expose stable bearing error codes.
+
 ## 0.1.0 - 2026-09-07
 
 Initial usable PTR Core release for PTR specification v0.1.

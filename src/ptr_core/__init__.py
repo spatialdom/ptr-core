@@ -44,6 +44,16 @@ from ptr_core.io import (
 )
 from ptr_core.models import Course, PTRRecord
 from ptr_core.qa import QAReport, qa_report
+from ptr_core.technical_description import (
+    CourseParseError,
+    ParsedCourse,
+    ParsedValue,
+    SourceSpan,
+    TechnicalDescriptionResult,
+    parse_course,
+    parse_distance,
+    parse_technical_description,
+)
 from ptr_core.topology import TopologyResult, analyze_topology
 from ptr_core.transforms import (
     TransformedParcel,
@@ -58,6 +68,14 @@ from ptr_core.validation import Diagnostic, Severity, ValidationResult, validate
 __all__ = [
     "Bearing",
     "BearingError",
+    "CourseParseError",
+    "ParsedCourse",
+    "ParsedValue",
+    "SourceSpan",
+    "TechnicalDescriptionResult",
+    "parse_course",
+    "parse_distance",
+    "parse_technical_description",
     "AreaComparison",
     "BoundingBox",
     "Closure",

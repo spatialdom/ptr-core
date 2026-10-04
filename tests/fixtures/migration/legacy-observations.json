@@ -1,0 +1,769 @@
+{
+  "inspected_file_sha256": {
+    "apps/backend/plotting/technical_description_parser.py": "100671e25e8407b8316782e6145ce99cc01e5bd4ff07a6a0e7a1b18c2c06921e",
+    "apps/backend/tests/test_parser_recovery_api.py": "0069678339fff5ab0e5d8c29359307a1dfb91e8c0dfc7c1ec74bace4af1bc8fd",
+    "apps/backend/tests/test_technical_description_fixture_corpus.py": "9e814b0f70dec6eb067433ddad2edfa9bb94de6f043e1250a06b09a7808167a1",
+    "apps/backend/tests/test_technical_description_parser_api.py": "8534a47741aa81f71348e1feb1e6d50ca253932074223f7b38f08fe67e30cef4",
+    "apps/web/e2e/parser-recovery.spec.ts": "ecb5fae7329d7f95ab1918460c9b3d555c8fcc576c62eaee14e17e343df931d2",
+    "apps/web/e2e/technical-description-layout.spec.ts": "ee4720663c1a80efb2494d67d03e106effb66634c746af4ebf85c9c87e1c858a",
+    "apps/web/e2e/technical-description-tie-point.spec.ts": "4764a4ca7f01eab2b4f2d39a9b73ea524bcbb2efdce02798a1039489d8857a48",
+    "apps/web/src/features/plotter/state/recoveryCourses.test.ts": "e47f747f2dc97426efc56a0b33215a23e3cc9907410d7981f101d0a4641fc505",
+    "apps/web/src/features/plotter/state/recoveryCourses.ts": "a8afc4ad7ae977c8bb28b9b3b4da932b1c46351279e229df3b9fa47777c0f57e",
+    "docs/specs/technical-description-parser.md": "7c54baf9a2ac1b11033b09d10e315a5fe1f0436ecb54b09a66dcb7f49908a377"
+  },
+  "observations": {
+    "area-billion": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "2003004005.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-conflicting-statements": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "100.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-contradictory-words-digits": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "120.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-decimal-abbreviation": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "19346.30",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-m2": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "125.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-malformed-grouping": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "100.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-numeric": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "10588.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-sqm": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "125.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-square-decimeters": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "19346.30",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-unknown-wording": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-words-only": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "125.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "area-words-parenthesized": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": "528833.00",
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "cardinal-directions": {
+      "complete": true,
+      "courses": [
+        {
+          "cardinal": "N",
+          "destination_point": 2,
+          "distance_m": "10.00",
+          "returns_to_beginning": false,
+          "source_end": 37,
+          "source_start": 0,
+          "source_text": "thence North, 10.00 meters to point 2"
+        },
+        {
+          "cardinal": "E",
+          "destination_point": 3,
+          "distance_m": "62.9",
+          "returns_to_beginning": false,
+          "source_end": 74,
+          "source_start": 39,
+          "source_text": "thence East, 62.9 metres to point 3"
+        },
+        {
+          "cardinal": "S",
+          "destination_point": 4,
+          "distance_m": "10.00",
+          "returns_to_beginning": false,
+          "source_end": 108,
+          "source_start": 76,
+          "source_text": "thence South, 10.00 m to point 4"
+        },
+        {
+          "cardinal": "W",
+          "destination_point": null,
+          "distance_m": "62.9",
+          "returns_to_beginning": true,
+          "source_end": 160,
+          "source_start": 110,
+          "source_text": "thence West, 62.9 meters to the point of beginning"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": null,
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "DESCRIPTION_RECOGNIZED",
+          "message": "Description recognized."
+        }
+      ]
+    },
+    "corrupted-distance": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "unrecognized_course",
+      "tie_line_candidate": null,
+      "unparsed_segments": [
+        {
+          "category": "unrecognized_course",
+          "message": "We could not read this line. Check its bearing and distance.",
+          "source_end": 53,
+          "source_start": 0,
+          "source_text": "thence West, 62.9,9 meters to the point of beginning;"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "PARTIAL_PARSE",
+          "message": "0 boundary lines recognized. Review the highlighted text or encode manually."
+        }
+      ]
+    },
+    "degree-prime-curly-quotes": {
+      "complete": false,
+      "courses": [
+        {
+          "degrees": 1,
+          "destination_point": 2,
+          "distance_m": "76.00",
+          "east_west": "E",
+          "minutes": 44,
+          "north_south": "N",
+          "returns_to_beginning": false,
+          "source_end": 46,
+          "source_start": 0,
+          "source_text": "thence N. 1° 44′ E., 76.00 meters to point “2”"
+        },
+        {
+          "degrees": 64,
+          "destination_point": 3,
+          "distance_m": "77.43",
+          "east_west": "W",
+          "minutes": 51,
+          "north_south": "S",
+          "returns_to_beginning": false,
+          "source_end": 99,
+          "source_start": 48,
+          "source_text": "thence S. 64 deg, 51’ W., 77.43 metres to point “3”"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "invalid-degrees": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "unrecognized_bearing",
+      "tie_line_candidate": null,
+      "unparsed_segments": [
+        {
+          "category": "unrecognized_bearing",
+          "message": "We could not read the bearing for this line.",
+          "source_end": 45,
+          "source_start": 0,
+          "source_text": "thence N 90 deg 00 min E, 10.00 m to point 2;"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "PARTIAL_PARSE",
+          "message": "0 boundary lines recognized. Review the highlighted text or encode manually."
+        }
+      ]
+    },
+    "invalid-minutes": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "unrecognized_bearing",
+      "tie_line_candidate": null,
+      "unparsed_segments": [
+        {
+          "category": "unrecognized_bearing",
+          "message": "We could not read the bearing for this line.",
+          "source_end": 45,
+          "source_start": 0,
+          "source_text": "thence N 45 deg 60 min E, 10.00 m to point 2;"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "PARTIAL_PARSE",
+          "message": "0 boundary lines recognized. Review the highlighted text or encode manually."
+        }
+      ]
+    },
+    "lot-locality-context": {
+      "complete": false,
+      "courses": [
+        {
+          "cardinal": "N",
+          "destination_point": 2,
+          "distance_m": "10",
+          "returns_to_beginning": false,
+          "source_end": 203,
+          "source_start": 174,
+          "source_text": "thence North, 10 m to point 2"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "missing-bearing-minutes": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "unrecognized_bearing",
+      "tie_line_candidate": null,
+      "unparsed_segments": [
+        {
+          "category": "unrecognized_bearing",
+          "message": "We could not read the bearing for this line.",
+          "source_end": 38,
+          "source_start": 0,
+          "source_text": "thence N 45 deg E, 10.00 m to point 2;"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "PARTIAL_PARSE",
+          "message": "0 boundary lines recognized. Review the highlighted text or encode manually."
+        }
+      ]
+    },
+    "missing-distance": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "missing_distance",
+      "tie_line_candidate": null,
+      "unparsed_segments": [
+        {
+          "category": "missing_distance",
+          "message": "The bearing looks readable, but this line has no readable distance.",
+          "source_end": 38,
+          "source_start": 0,
+          "source_text": "thence West to the point of beginning;"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "PARTIAL_PARSE",
+          "message": "0 boundary lines recognized. Review the highlighted text or encode manually."
+        }
+      ]
+    },
+    "missing-optional-fields": {
+      "complete": false,
+      "courses": [
+        {
+          "cardinal": "N",
+          "destination_point": 2,
+          "distance_m": "10",
+          "returns_to_beginning": false,
+          "source_end": 29,
+          "source_start": 0,
+          "source_text": "thence North, 10 m to point 2"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "partial-unparsed-thence": {
+      "complete": false,
+      "courses": [
+        {
+          "degrees": 45,
+          "destination_point": 2,
+          "distance_m": "10.00",
+          "east_west": "E",
+          "minutes": 0,
+          "north_south": "N",
+          "returns_to_beginning": false,
+          "source_end": 44,
+          "source_start": 0,
+          "source_text": "thence N 45 deg 00 min E, 10.00 m to point 2"
+        },
+        {
+          "degrees": 45,
+          "destination_point": 4,
+          "distance_m": "10.00",
+          "east_west": "W",
+          "minutes": 0,
+          "north_south": "S",
+          "returns_to_beginning": false,
+          "source_end": 132,
+          "source_start": 88,
+          "source_text": "thence S 45 deg 00 min W, 10.00 m to point 4"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": "unrecognized_course",
+      "tie_line_candidate": null,
+      "unparsed_segments": [
+        {
+          "category": "unrecognized_course",
+          "message": "We could not read this line. Check its bearing and distance.",
+          "source_end": 87,
+          "source_start": 46,
+          "source_text": "thence turn left and continue to point 3;"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "PARTIAL_PARSE",
+          "message": "2 boundary lines recognized. Review the highlighted text or encode manually."
+        }
+      ]
+    },
+    "quadrant-punctuation": {
+      "complete": true,
+      "courses": [
+        {
+          "degrees": 30,
+          "destination_point": 2,
+          "distance_m": "10.22",
+          "east_west": "W",
+          "minutes": 53,
+          "north_south": "S",
+          "returns_to_beginning": false,
+          "source_end": 46,
+          "source_start": 0,
+          "source_text": "thence S.. 30 deg. 53' W., 10.22 m. to point 2"
+        },
+        {
+          "degrees": 78,
+          "destination_point": 3,
+          "distance_m": "74.61",
+          "east_west": "E",
+          "minutes": 58,
+          "north_south": "N",
+          "returns_to_beginning": false,
+          "source_end": 93,
+          "source_start": 48,
+          "source_text": "thence N, 78 deg. 58' E., 74.61 m. to point 3"
+        },
+        {
+          "degrees": 20,
+          "destination_point": 4,
+          "distance_m": "105.70",
+          "east_west": "W",
+          "minutes": 51,
+          "north_south": "S",
+          "returns_to_beginning": false,
+          "source_end": 142,
+          "source_start": 95,
+          "source_text": "thence S. 20 deg. 51'' W., 105.70 m. to point 4"
+        },
+        {
+          "degrees": 69,
+          "destination_point": null,
+          "distance_m": "53.75",
+          "east_west": "W",
+          "minutes": 7,
+          "north_south": "S",
+          "returns_to_beginning": true,
+          "source_end": 204,
+          "source_start": 144,
+          "source_text": "thence S. 69 deg. 07\" W., 53.75 m. to the point of beginning"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": null,
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "DESCRIPTION_RECOGNIZED",
+          "message": "Description recognized."
+        }
+      ]
+    },
+    "reference-without-tie": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "tie-bbm": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": {
+        "degrees": 2,
+        "distance_m": "1738.19",
+        "east_west": "E",
+        "minutes": 25,
+        "north_south": "S",
+        "reference_text": "BBM 3, Cad. 999, Synthetic Cadastre",
+        "source_end": 99,
+        "source_start": 0,
+        "source_text": "Beginning at point 1, being S. 02 deg. 25' E., 1,738.19 m. from BBM 3, Cad. 999, Synthetic Cadastre"
+      },
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "tie-bllm": {
+      "complete": false,
+      "courses": [
+        {
+          "cardinal": "N",
+          "destination_point": 2,
+          "distance_m": "10",
+          "returns_to_beginning": false,
+          "source_end": 142,
+          "source_start": 113,
+          "source_text": "thence North, 10 m to point 2"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": {
+        "degrees": 24,
+        "distance_m": "413.06",
+        "east_west": "W",
+        "minutes": 22,
+        "north_south": "N",
+        "reference_text": "BLLM No. 6, Synthetic Cadastre",
+        "source_end": 111,
+        "source_start": 0,
+        "source_text": "Beginning at a point marked \"1\" on plan, being N. 24 deg. 22' W., 413.06 m. from BLLM No. 6, Synthetic Cadastre"
+      },
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "tie-cardinal": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": {
+        "cardinal": "W",
+        "distance_m": "25.00",
+        "reference_text": "BLLM No. 1",
+        "source_end": 57,
+        "source_start": 0,
+        "source_text": "Beginning at point 1, being West, 25.00 m from BLLM No. 1"
+      },
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "tie-fire-hydrant": {
+      "complete": false,
+      "courses": [
+        {
+          "cardinal": "W",
+          "destination_point": null,
+          "distance_m": "12",
+          "returns_to_beginning": true,
+          "source_end": 143,
+          "source_start": 100,
+          "source_text": "thence West, 12 m to the point of beginning"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": {
+        "degrees": 9,
+        "distance_m": "34.91",
+        "east_west": "E",
+        "minutes": 9,
+        "north_south": "S",
+        "reference_text": "Fire Hyd. 42, Synthetic City",
+        "source_end": 98,
+        "source_start": 0,
+        "source_text": "Beginning at point “1” on plan, being S. 9 deg, 09’ E., 34.91 m. from Fire Hyd. 42, Synthetic City"
+      },
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "tie-invalid-range": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": null,
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "tie-ocr-anchor": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": {
+        "degrees": 50,
+        "distance_m": "600.10",
+        "east_west": "W",
+        "minutes": 49,
+        "north_south": "N",
+        "reference_text": "Mon. No. 15, Synthetic Estate",
+        "source_end": 106,
+        "source_start": 0,
+        "source_text": "eginning at point 1 on plan, being N. (noise( 50 deg. 49' W., 600.10 m. from Mon. No. 15, Synthetic Estate"
+      },
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "tie-pbm": {
+      "complete": false,
+      "courses": [],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": {
+        "degrees": 49,
+        "distance_m": "1810.47",
+        "east_west": "W",
+        "minutes": 50,
+        "north_south": "S",
+        "reference_text": "PBM No. 11, Synthetic Cadastre",
+        "source_end": 93,
+        "source_start": 0,
+        "source_text": "Beginning at point 1, being S. 49 deg. 50 W., 1,810.47 m. from PBM No. 11, Synthetic Cadastre"
+      },
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    },
+    "tie-triangulation": {
+      "complete": false,
+      "courses": [
+        {
+          "cardinal": "N",
+          "destination_point": 2,
+          "distance_m": "10",
+          "returns_to_beginning": false,
+          "source_end": 140,
+          "source_start": 111,
+          "source_text": "thence North, 10 m to point 2"
+        }
+      ],
+      "declared_area_sqm": null,
+      "recovery_category": "insufficient_courses",
+      "tie_line_candidate": {
+        "degrees": 38,
+        "distance_m": "801.12",
+        "east_west": "W",
+        "minutes": 47,
+        "north_south": "S",
+        "reference_text": "C & G.S. Triangulation Station Synthetic (1930)",
+        "source_end": 109,
+        "source_start": 0,
+        "source_text": "Beginning at point 1, being S. 38° 47′ W., 801.12 meters from C & G.S. Triangulation Station Synthetic (1930)"
+      },
+      "unparsed_segments": [],
+      "warnings": [
+        {
+          "code": "TOO_FEW_PARSED_COURSES",
+          "message": "Enter at least three supported boundary lines."
+        }
+      ]
+    }
+  },
+  "parser_version": "3",
+  "rights": "Only freshly authored synthetic input from documentary-cases.json was executed. No document corpus was copied.",
+  "source_commit": "5cf293b5d27e1d093431bee6b18f3089276dd615",
+  "source_repository": "spatialdom/parcel-plotter"
+}

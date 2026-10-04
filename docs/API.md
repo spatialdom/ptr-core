@@ -35,6 +35,47 @@ Unlabelled azimuths and ambiguous directions are rejected. `normalize=False`
 continues to require stored canonical PTR syntax. `BearingError.code` is
 `invalid_bearing`, or `noncanonical_bearing` for strict input rejection.
 
+## Technical Description And Manual Courses
+
+- `parse_course(bearing, distance)` returns a normalized `Course`, for both
+  manual boundary courses and tie lines. `parse_distance(value)` accepts positive
+  finite numeric metres or decimal/scientific strings with valid thousands
+  grouping. Neither function infers units or repairs malformed numbers.
+- `CourseParseError.code` is `invalid_distance` or the bearing error category.
+- `parse_technical_description(text, candidate_id=None, sources=())` returns
+  `TechnicalDescriptionResult`. Inputs are recovered text, never documents.
+
+Supported course syntax is `thence <bearing>, <distance> m [to point 2]`, with
+`meter(s)`/`metre(s)` spelling, optional comma, quoted destination numbers, or
+explicit `to [the] point of beginning`. Thence clauses can wrap lines; manual
+input without thence uses one course per line or semicolon. Cardinal aliases,
+quadrants and seconds all use `parse_bearing`. Documentary axis punctuation
+(`N.`, `S..`, `E.,`), degree/minute wording and curly minute quotes are explicit
+input variants, while stored syntax remains strict. Leading-zero degrees,
+missing components and bracketed OCR noise are rejected.
+
+`Beginning at ... being <course> from <reference>` produces a separate tie row.
+`Reference point: "..."` accepts JSON-quoted reference text. Numeric
+`Stated area: <number> square metres` and `containing an area of <number> square
+meters` clauses are supported for generated-description round trips; worded
+area extraction belongs to PTR Extract. All alternatives remain available.
+
+`rows` preserves every boundary position, including `course=None` on failure;
+`courses` is the convenience tuple of successful courses. `tie_lines`,
+`reference_points`, `stated_areas`, `unparsed_spans` and `diagnostics` are separate.
+Each row has documentary `destination_point`, `returns_to_beginning`, and a
+`SourceSpan`: exact text, half-open Unicode code-point offsets, candidate ID and
+opaque source mappings. These offsets refer to input text, not original page
+coordinates or browser UTF-16 indices. Source associations survive normalization.
+
+`complete` requires three supported boundary courses and no error diagnostics;
+it does not assert closure. Stable interpretation categories include
+`invalid_bearing`, `invalid_distance`, `missing_distance`, `unrecognized_course`,
+`invalid_destination`, `unrecognized_tie_line`, `invalid_reference`,
+`invalid_stated_area`, `too_few_courses`, and `unresolved_continuation`.
+Uninterpreted context is retained with informational `unparsed_context`.
+No ordering, destination, return, geometry or missing course is inferred.
+
 ## Validation And QA
 
 - `validate(source)` returns `ValidationResult`; expected conformance failures

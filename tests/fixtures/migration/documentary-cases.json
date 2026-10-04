@@ -1,0 +1,198 @@
+{
+  "fixture_version": "1",
+  "rights": "Fresh synthetic examples authored for migration; no production source documents or legacy corpus files copied.",
+  "cases": [
+    {
+      "id": "area-numeric",
+      "behaviors": ["documentary_declared_area"],
+      "text": "containing an area of 10,588 square meters, more or less.",
+      "expected": {"areas": ["10588"], "area_statuses": ["found"]}
+    },
+    {
+      "id": "area-words-parenthesized",
+      "behaviors": ["number_words", "parenthesized_numeric_area"],
+      "text": "containing an area of FIVE HUNDRED TWENTY EIGHT THOUSAND EIGHT HUNDRED THIRTY-THREE (528,833) Square Meters, more or less.",
+      "expected": {"areas": ["528833"], "area_statuses": ["found"]}
+    },
+    {
+      "id": "area-words-only",
+      "behaviors": ["number_words"],
+      "text": "containing an area of ONE HUNDRED AND TWENTY-FIVE SQUARE METRES.",
+      "expected": {"areas": ["125"], "area_statuses": ["found"]}
+    },
+    {
+      "id": "area-billion",
+      "behaviors": ["number_words"],
+      "text": "containing an area of TWO BILLION THREE MILLION FOUR THOUSAND FIVE square meters.",
+      "expected": {"areas": ["2003004005"], "area_statuses": ["found"]}
+    },
+    {
+      "id": "area-decimal-abbreviation",
+      "behaviors": ["documentary_declared_area", "unit_spellings"],
+      "text": "containing an area of 19,346.3 sq. m., more or less.",
+      "expected": {"areas": ["19346.3"], "area_statuses": ["found"]}
+    },
+    {
+      "id": "area-sqm",
+      "behaviors": ["unit_spellings"],
+      "text": "containing an area of 125 sqm, more or less.",
+      "expected": {"areas": ["125"], "area_statuses": ["found"]}
+    },
+    {
+      "id": "area-m2",
+      "behaviors": ["unit_spellings"],
+      "text": "containing an area of 125 m2.",
+      "expected": {"areas": ["125"], "area_statuses": ["found"]}
+    },
+    {
+      "id": "area-square-decimeters",
+      "behaviors": ["square_decimeter_wording", "parenthesized_numeric_area"],
+      "text": "containing an area of NINETEEN THOUSAND THREE HUNDRED FORTY SIX SQUARE METERS AND THIRTY SQUARE DECIMETERS (19,346.3), more or less.",
+      "expected": {"areas": ["19346.3"], "area_statuses": ["found"]}
+    },
+    {
+      "id": "quadrant-punctuation",
+      "behaviors": ["quadrant_punctuation", "numeric_distances", "destination_point", "return_to_beginning"],
+      "text": "thence S.. 30 deg. 53' W., 10.22 m. to point 2;\nthence N, 78 deg. 58' E., 74.61 m. to point 3;\nthence S. 20 deg. 51'' W., 105.70 m. to point 4;\nthence S. 69 deg. 07\" W., 53.75 m. to the point of beginning;",
+      "expected": {"description_segments": 4}
+    },
+    {
+      "id": "cardinal-directions",
+      "behaviors": ["written_cardinals", "destination_point", "return_to_beginning"],
+      "text": "thence North, 10.00 meters to point 2; thence East, 62.9 metres to point 3; thence South, 10.00 m to point 4; thence West, 62.9 meters to the point of beginning;",
+      "expected": {"description_segments": 4}
+    },
+    {
+      "id": "degree-prime-curly-quotes",
+      "behaviors": ["degree_prime_variants", "destination_point"],
+      "text": "thence N. 1\u00b0 44\u2032 E., 76.00 meters to point \u201c2\u201d; thence S. 64 deg, 51\u2019 W., 77.43 metres to point \u201c3\u201d;",
+      "expected": {"description_segments": 2}
+    },
+    {
+      "id": "tie-bllm",
+      "behaviors": ["tie_line", "reference_bllm"],
+      "text": "Beginning at a point marked \"1\" on plan, being N. 24 deg. 22' W., 413.06 m. from BLLM No. 6, Synthetic Cadastre: thence North, 10 m to point 2;",
+      "expected": {"ties": ["Beginning at a point marked \"1\" on plan, being N. 24 deg. 22' W., 413.06 m. from BLLM No. 6, Synthetic Cadastre"], "references": ["BLLM No. 6, Synthetic Cadastre"], "description_segments": 1}
+    },
+    {
+      "id": "tie-pbm",
+      "behaviors": ["tie_line", "reference_pbm"],
+      "text": "Beginning at point 1, being S. 49 deg. 50 W., 1,810.47 m. from PBM No. 11, Synthetic Cadastre;",
+      "expected": {"references": ["PBM No. 11, Synthetic Cadastre"], "tie_count": 1}
+    },
+    {
+      "id": "tie-bbm",
+      "behaviors": ["tie_line", "reference_bbm"],
+      "text": "Beginning at point 1, being S. 02 deg. 25' E., 1,738.19 m. from BBM 3, Cad. 999, Synthetic Cadastre:",
+      "expected": {"references": ["BBM 3, Cad. 999, Synthetic Cadastre"], "tie_count": 1}
+    },
+    {
+      "id": "tie-triangulation",
+      "behaviors": ["tie_line", "reference_triangulation"],
+      "text": "Beginning at point 1, being S. 38\u00b0 47\u2032 W., 801.12 meters from C & G.S. Triangulation Station Synthetic (1930), thence North, 10 m to point 2;",
+      "expected": {"references": ["C & G.S. Triangulation Station Synthetic (1930)"], "tie_count": 1, "description_segments": 1}
+    },
+    {
+      "id": "tie-fire-hydrant",
+      "behaviors": ["tie_line", "reference_monument", "degree_prime_variants"],
+      "text": "Beginning at point \u201c1\u201d on plan, being S. 9 deg, 09\u2019 E., 34.91 m. from Fire Hyd. 42, Synthetic City.\nthence West, 12 m to the point of beginning;",
+      "expected": {"references": ["Fire Hyd. 42, Synthetic City"], "tie_count": 1, "description_segments": 1}
+    },
+    {
+      "id": "tie-cardinal",
+      "behaviors": ["tie_line", "written_cardinals", "reference_bllm"],
+      "text": "Beginning at point 1, being West, 25.00 m from BLLM No. 1;",
+      "expected": {"references": ["BLLM No. 1"], "tie_count": 1}
+    },
+    {
+      "id": "tie-ocr-anchor",
+      "behaviors": ["conservative_ocr_noise", "reference_monument"],
+      "text": "eginning at point 1 on plan, being N. (noise( 50 deg. 49' W., 600.10 m. from Mon. No. 15, Synthetic Estate:",
+      "expected": {"references": ["Mon. No. 15, Synthetic Estate"], "tie_count": 1, "tie_statuses": ["ambiguous"], "warning_codes": ["noisy_tie_anchor"]}
+    },
+    {
+      "id": "tie-invalid-range",
+      "behaviors": ["invalid_bearing_ranges", "no_silent_repair"],
+      "text": "Beginning at point 1, being N. 90 deg. 00' W., 413.06 m. from BLLM No. 6:",
+      "expected": {"references": ["BLLM No. 6"], "tie_count": 1, "warning_codes": ["parcel_semantics_unchecked"]}
+    },
+    {
+      "id": "reference-without-tie",
+      "behaviors": ["no_invented_tie_line", "reference_bllm"],
+      "text": "The parcel is 413.06 m. from BLLM No. 6.",
+      "expected": {"references": ["BLLM No. 6."], "tie_count": 0}
+    },
+    {
+      "id": "partial-unparsed-thence",
+      "behaviors": ["partial_parse", "unparsed_thence_segments", "no_silent_repair"],
+      "text": "thence N 45 deg 00 min E, 10.00 m to point 2;\nthence turn left and continue to point 3;\nthence S 45 deg 00 min W, 10.00 m to point 4;",
+      "expected": {"description_segments": 3, "warning_codes": ["parcel_semantics_unchecked"]}
+    },
+    {
+      "id": "invalid-degrees",
+      "behaviors": ["invalid_bearing_ranges", "no_silent_repair"],
+      "text": "thence N 90 deg 00 min E, 10.00 m to point 2;",
+      "expected": {"description_segments": 1}
+    },
+    {
+      "id": "invalid-minutes",
+      "behaviors": ["invalid_bearing_ranges", "no_silent_repair"],
+      "text": "thence N 45 deg 60 min E, 10.00 m to point 2;",
+      "expected": {"description_segments": 1}
+    },
+    {
+      "id": "missing-bearing-minutes",
+      "behaviors": ["incomplete_bearings", "no_silent_repair"],
+      "text": "thence N 45 deg E, 10.00 m to point 2;",
+      "expected": {"description_segments": 1}
+    },
+    {
+      "id": "missing-distance",
+      "behaviors": ["missing_distances", "no_silent_repair"],
+      "text": "thence West to the point of beginning;",
+      "expected": {"description_segments": 1}
+    },
+    {
+      "id": "corrupted-distance",
+      "behaviors": ["conservative_ocr_noise", "no_silent_repair"],
+      "text": "thence West, 62.9,9 meters to the point of beginning;",
+      "expected": {"description_segments": 1}
+    },
+    {
+      "id": "area-contradictory-words-digits",
+      "behaviors": ["ambiguous_area", "no_silent_repair"],
+      "text": "containing an area of ONE HUNDRED (120) square meters.",
+      "expected": {"areas": ["120", "100"], "area_statuses": ["conflicting", "conflicting"], "warning_codes": ["conflicting_stated_area"]}
+    },
+    {
+      "id": "area-conflicting-statements",
+      "behaviors": ["conflicting_candidates"],
+      "text": "containing an area of 100 square meters; containing an area of 120 square meters.",
+      "expected": {"areas": ["100", "120"], "area_statuses": ["conflicting", "conflicting"], "warning_codes": ["conflicting_stated_area"]}
+    },
+    {
+      "id": "area-unknown-wording",
+      "behaviors": ["ambiguous_area", "no_silent_repair"],
+      "text": "containing an area of ONE TWOO square meters.",
+      "expected": {"areas": [null], "area_statuses": ["ambiguous"], "warning_codes": ["unreadable_stated_area"]}
+    },
+    {
+      "id": "area-malformed-grouping",
+      "behaviors": ["ambiguous_area", "no_silent_repair"],
+      "text": "containing an area of 1,00 square meters.",
+      "expected": {"areas": [null], "area_statuses": ["ambiguous"], "warning_codes": ["unreadable_stated_area"]}
+    },
+    {
+      "id": "missing-optional-fields",
+      "behaviors": ["missing_optional_fields"],
+      "text": "thence North, 10 m to point 2;",
+      "expected": {"description_segments": 1, "areas": [], "references": [], "tie_count": 0, "lot_count": 0, "locality_count": 0}
+    },
+    {
+      "id": "lot-locality-context",
+      "behaviors": ["explicit_lot_label", "situated_in_context"],
+      "text": "Lot No. SYN-7\nA parcel of land situated in Barangay Example, Municipality of Sample, Province of Synthetic.\nBounded along line 1-2 by Lot 1024; along line 2-3 by Road Lot 8.\nthence North, 10 m to point 2;",
+      "expected": {"lot_count": 1, "locality_count": 1, "description_segments": 1}
+    }
+  ]
+}

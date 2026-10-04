@@ -4,6 +4,9 @@
 
 - Accept explicit cardinal words and Due bearings in normalized input (#23);
   stored PTR v0.1 syntax remains strict. Expose stable bearing error codes.
+- Add shared technical-description and manual-course parsing, source-associated
+  partial rows, tie/destination/continuation semantics, and migration fixtures
+  (#22). Reject malformed grouping and OCR repairs explicitly.
 
 ## 0.1.0 - 2026-09-07
 

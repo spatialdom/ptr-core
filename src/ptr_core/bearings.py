@@ -114,6 +114,15 @@ def _normalize_bearing_text(value: str) -> str:
     if words in aliases:
         return aliases[words]
 
+    # Documentary punctuation is explicit syntax, never an OCR correction.
+    upper = re.sub(r"^([NS])[.,]+\s*", r"\1 ", upper)
+    upper = re.sub(r"([EW])[.,]+$", r"\1", upper)
+    upper = re.sub(r"\b(?:DEGREES?|DEG)[.,]?", "DEG", upper)
+    upper = re.sub(r"\b(?:MINUTES?|MIN)\.?", "M", upper)
+    upper = upper.replace("\u2018", "'").replace("\u2019", "'")
+    # Legacy double apostrophes/quotes mark minutes only directly before E/W.
+    upper = re.sub(r"(?:''|\")\s*(?=[EW]$)", "'", upper)
+
     compact = re.sub(r"\s+", "", upper)
     if _AMBIGUOUS_RE.match(compact):
         raise BearingError(f"Ambiguous bearing syntax: {value!r}.")

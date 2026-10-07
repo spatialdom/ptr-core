@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Prepare public distribution (#18) with verified wheel/source artifacts,
+  checksums, isolated install tests and a draft-only GitHub release workflow.
+  Document independent library/PTR versioning and the Parcel Plotter #178 handoff.
+- Preserve CC BY 4.0 attribution for vendored PTR conformance fixtures. Public
+  publication is approved after this PR is merged; retain the synthetic migration
+  fixture provenance and keep the producer repository private.
+
 - Add versioned synthetic technical-description benchmark `td-v1.0.0` (#21),
   with explicit normalized rows, metadata, ambiguity and diagnostic expectations.
   Report exact recovery, case status, syntax-family failures and version/commit

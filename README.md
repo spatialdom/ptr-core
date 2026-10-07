@@ -13,7 +13,22 @@ framework, database, or UI dependency.
 
 ## Install
 
-From this repository:
+Release candidate: v0.1.1 is prepared for public distribution; publication is
+approved after the release-preparation PR is merged. See
+[docs/RELEASING.md](docs/RELEASING.md) for the publication sequence.
+After publication, install the immutable GitHub wheel (PyPI is not yet configured):
+
+```bash
+python -m pip install "https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
+```
+
+GIS consumers select the extra explicitly on that released artifact:
+
+```bash
+python -m pip install "ptr-core[geospatial] @ https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
+```
+
+During release preparation, install from this checkout:
 
 ```bash
 python -m pip install -e .
@@ -25,7 +40,7 @@ GEOS/PROJ backends for topology, polygon-to-course conversion, and CRS transform
 
 ```bash
 python -m pip install -e ".[geospatial]"
-# published package: python -m pip install "ptr-core[geospatial]"
+# After a verified PyPI release: python -m pip install "ptr-core[geospatial]==0.1.1"
 ```
 
 Advanced imports remain available in the base install. Calls that need a missing
@@ -325,4 +340,8 @@ This evaluates parcel text interpretation, independently of OCR or models.
 
 ## License
 
-PTR Core is released under the MIT License. See `LICENSE`.
+PTR Core implementation is MIT licensed. See `LICENSE`.
+Vendored PTR conformance fixtures are separately CC BY 4.0; attribution and
+license notices are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Library semantic versioning and PTR format compatibility are independent; see
+[docs/RELEASING.md](docs/RELEASING.md) for publication and downstream pinning.

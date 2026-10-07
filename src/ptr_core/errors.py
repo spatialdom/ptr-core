@@ -15,3 +15,15 @@ class PTRSerializationError(PTRError, ValueError):
 
 class PTRUnsupportedVersionError(PTRParseError):
     """Raised when a PTR record uses an unsupported PTR specification version."""
+
+
+class MissingOptionalDependencyError(PTRError, ImportError):
+    """An advanced capability needs an optional geospatial dependency."""
+
+    def __init__(self, dependency: str, capability: str) -> None:
+        self.dependency = dependency
+        self.capability = capability
+        super().__init__(
+            f"{capability} requires {dependency}; "
+            'install the geospatial extra with: pip install "ptr-core[geospatial]"'
+        )

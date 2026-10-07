@@ -13,3 +13,7 @@ tests compare supported course/tie semantics and explicitly reject malformed
 grouping, leading-zero degrees, zero-offset quadrants and noisy OCR anchors.
 Worded documentary area extraction stays with PTR Extract; Core accepts numeric
 square-metre clauses and retains unsupported clauses for review.
+
+The maintainer approved public distribution of these synthetic copies within
+MIT-licensed PTR Core on 2026-10-07, after the release-preparation PR is merged.
+This does not change PTR Extract's visibility or license its other contents.

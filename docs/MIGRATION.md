@@ -141,6 +141,32 @@ be tested against this checkout by placing its `src` directory first on
 `PYTHONPATH`; no application dependency is added to Core. External candidate
 review still requires the separate neutral-intake migration described above.
 
+## Optional geospatial installation
+
+Replace an application dependency on `ptr-core` with `ptr-core[geospatial]` if
+it calls topology, polygon-to-course conversion, or CRS transforms. Preserve any
+reviewed version or commit pin. For example, a VCS dependency becomes:
+
+```text
+ptr-core[geospatial] @ git+https://github.com/spatialdom/ptr-core.git@<reviewed-commit>
+```
+
+Parcel Plotter's backend dependency declaration and install documentation now
+request this extra. Its current commit pin remains unchanged; advance it to the
+reviewed release containing this change when published. Existing older pins
+still install their original mandatory backends. Backend Docker builds consume
+the same dependency declaration as local installs.
+
+For local integration verification, install `.[geospatial]` from this checkout
+and place its `src` first on `PYTHONPATH` when running Parcel Plotter tests. Public
+function signatures and result types stay compatible; application adapters need
+no change for this dependency migration. The separate external-candidate intake
+migration remains necessary when advancing past the neutral-intake change.
+
+Core CI tests both `.[dev]` and `.[dev,geospatial]` installations. Tests requiring
+an installed backend skip in the base profile; base workflow and missing-backend
+errors run in both profiles. GEOS/PROJ functionality is not reimplemented.
+
 ### Parcel Plotter legacy parser removal
 
 The generic text parser now supports the common number-word/parenthesized stated

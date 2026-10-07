@@ -13,16 +13,43 @@ framework, database, or UI dependency.
 
 ## Install
 
-From this repository:
+Release candidate: v0.1.1 is prepared for public distribution; publication is
+approved after the release-preparation PR is merged. See
+[docs/RELEASING.md](docs/RELEASING.md) for the publication sequence.
+After publication, install the immutable GitHub wheel (PyPI is not yet configured):
+
+```bash
+python -m pip install "https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
+```
+
+GIS consumers select the extra explicitly on that released artifact:
+
+```bash
+python -m pip install "ptr-core[geospatial] @ https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
+```
+
+During release preparation, install from this checkout:
 
 ```bash
 python -m pip install -e .
 ```
 
-For development:
+The base install has no runtime dependencies. It includes loading, parsing,
+validation, local geometry/metrics, and GeoJSON/WKT output. Install the optional
+GEOS/PROJ backends for topology, polygon-to-course conversion, and CRS transforms:
 
 ```bash
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[geospatial]"
+# After a verified PyPI release: python -m pip install "ptr-core[geospatial]==0.1.1"
+```
+
+Advanced imports remain available in the base install. Calls that need a missing
+backend raise `MissingOptionalDependencyError` with the install command.
+
+For development (including advanced geospatial tests):
+
+```bash
+python -m pip install -e ".[dev,geospatial]"
 pytest
 ruff check .
 mypy
@@ -178,7 +205,7 @@ topology = analyze_topology(
 
 Topology results expose compatible-frame status, overlap area, containment,
 point-touching, shared-edge adjacency, shared-boundary length, and gap distance.
-PTR Core uses Shapely/GEOS behind this API for polygon topology; tolerances are
+PTR Core uses Shapely/GEOS from the `geospatial` extra for polygon topology; tolerances are
 explicit and no parcel geometry is automatically snapped or repaired.
 
 ## Transforms
@@ -195,7 +222,8 @@ projected = transform_crs(
 )
 ```
 
-Translation and rotation are local rigid-body transforms. CRS transforms require
+Translation and rotation are local rigid-body transforms available in the base
+install. CRS transforms use pyproj/PROJ from the `geospatial` extra and require
 explicit source and target CRS identifiers. Each transform returns a separate
 derived geometry object with reproducible metadata and leaves the source PTR
 record unchanged.
@@ -213,7 +241,7 @@ candidate = derive_courses_from_polygon(
 ptr_like = candidate.to_mapping()
 ```
 
-Geometry-to-course conversion accepts simple polygons in a known metric
+Geometry-to-course conversion requires the `geospatial` extra and accepts simple polygons in a known metric
 coordinate frame. It emits clockwise canonical PTR bearings, rounds distances to
 the requested decimal places, and rounds bearings to the nearest second. The
 output is a computational PTR candidate, not documentary truth.
@@ -294,6 +322,26 @@ A record with serialization, structural, or semantic errors is not conforming.
 Geometric QA findings are reported separately and do not by themselves rewrite
 or invalidate documentary source truth.
 
+## Parser Benchmark
+
+Run the versioned synthetic recovered-text benchmark from this checkout:
+
+```bash
+python -m benchmarks.technical_description --output .benchmark-results/current.json
+```
+
+The report identifies Core's version/commit and records exact course recovery,
+complete/partial/rejected cases, diagnostic accuracy, and syntax-family failures.
+Use `--baseline <prior-report.json>` with the same corpus/subset to expose
+regressions across Core versions. CI runs a fixed representative subset; tests
+also check the full corpus. See [benchmarks/README.md](benchmarks/README.md) for
+metrics, corpus versioning, rights/privacy rules, and release-blocking failures.
+This evaluates parcel text interpretation, independently of OCR or models.
+
 ## License
 
-PTR Core is released under the MIT License. See `LICENSE`.
+PTR Core implementation is MIT licensed. See `LICENSE`.
+Vendored PTR conformance fixtures are separately CC BY 4.0; attribution and
+license notices are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Library semantic versioning and PTR format compatibility are independent; see
+[docs/RELEASING.md](docs/RELEASING.md) for publication and downstream pinning.

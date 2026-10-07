@@ -25,7 +25,7 @@ imports or stability. Compatibility names remain available separately.
 | Advanced | Interpretation and formatting results | `ParsedCourse`, `ParsedValue`, `SourceSpan`, `TechnicalDescriptionResult`, `GeneratedDescription`, `CourseRow`, `ManualTableProjection` |
 | Advanced | Geometry and metric results | `Point`, `Vector`, `DerivedParcel`, `ParcelMetrics`, `Closure`, `AreaComparison`, `GeoreferencedParcel`, `TransformedParcel`, `TransformStep`, `PTRCourseCandidate` |
 | Advanced | Comparison and topology results | `BoundingBox`, `CourseComparison`, `ComparisonResult`, `TopologyResult`, `QAReport` |
-| Advanced | Exceptions | `PTRError`, `PTRParseError`, `PTRSerializationError`, `PTRUnsupportedVersionError`, `BearingError`, `CourseParseError`, `PTRFormattingError`, `GeoreferencingError`, `TransformError`, `GeometryToCoursesError` |
+| Advanced | Exceptions | `PTRError`, `PTRParseError`, `PTRSerializationError`, `PTRUnsupportedVersionError`, `BearingError`, `CourseParseError`, `PTRFormattingError`, `GeoreferencingError`, `TransformError`, `GeometryToCoursesError`, `MissingOptionalDependencyError` |
 | Compatibility | Earlier prose-generation name | `format_technical_description` (exact alias of `to_technical_description`) |
 | Deprecated | Earlier intake name | `intake_candidate` (neutral input only; see migration guide) |
 
@@ -41,6 +41,40 @@ are deliberately omitted: they would duplicate result fields and leave unclear
 whether inputs were records or geometry, and whether misclosure meant a vector,
 a length, or a ratio. Use `parcel.metrics.area` (square metres), `.perimeter`
 (metres), and `.closure` (`east`, `north`, `linear` in metres).
+
+## Installation And Capability Boundaries
+
+`pip install ptr-core` has no runtime dependencies. Loading/serialization,
+parsing, interpretation, validation, QA, local reconstruction/metrics,
+GeoJSON/WKT export, explicit tie-point georeferencing, translation/rotation, and
+`compare_parcels` work in the base install. Comparison reports its existing
+vertex/boundary and bounding-box metrics; it does not compute polygon topology.
+Advanced API classification alone does not imply an optional dependency.
+
+`pip install "ptr-core[geospatial]"` adds Shapely/GEOS and pyproj/PROJ:
+
+| Capability | Backend required at call time |
+| --- | --- |
+| `analyze_topology` | Shapely/GEOS |
+| `derive_courses_from_polygon` (including coordinate sequences) | Shapely/GEOS for polygon validation |
+| `transform_crs` | pyproj/PROJ |
+
+All existing public imports, result types, and compatibility module imports are
+available without the extra. Backends are loaded only when the relevant
+capability is called. `MissingOptionalDependencyError` inherits `PTRError` and
+`ImportError`, exposes `dependency` and `capability`, and includes the extra's
+installation command. Input checks that do not need the backend can still raise
+their existing errors first. Errors within an installed backend are preserved;
+a broken backend installation is not misreported as a missing extra.
+
+The internal `ptr_core.geospatial` package groups optional topology,
+polygon-to-course conversion, CRS support, and backend loading. The earlier
+`ptr_core.topology` and `ptr_core.geometry_to_courses` modules re-export their
+public symbols. Base `transforms` retains dependency-free translation/rotation
+and delegates CRS backend construction to `geospatial.crs`. Parsing, local
+geometry, analysis, and conversion already have separate modules; grouping every
+module into new packages would add migration without changing these boundaries.
+Applications should continue importing from `ptr_core`.
 
 ## Supported PTR Versions
 
@@ -340,6 +374,8 @@ other CRS.
 - `CourseParseError`: invalid manual course/distance input, with a stable `code`.
 - `PTRFormattingError`: invalid record projection, with structured `diagnostics`.
 - `GeoreferencingError`: missing explicit georeferencing inputs.
+- `MissingOptionalDependencyError`: a geospatial capability needs an uninstalled
+  backend; install `ptr-core[geospatial]`.
 
 Validation, closure, self-intersection, area difference, and similar parcel QA
 conditions are reported as diagnostics/findings rather than exceptions.

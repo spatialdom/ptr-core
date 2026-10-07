@@ -2,6 +2,33 @@
 
 ## Unreleased
 
+- Revise the default parser benchmark to `td-v2.0.0` for PR #30's intentional
+  number-word area support and unrecognized-course diagnostic. Preserve the
+  original corpus and reject comparisons across revisions.
+
+- Prepare public distribution (#18) with verified wheel/source artifacts,
+  checksums, isolated install tests and a draft-only GitHub release workflow.
+  Document independent library/PTR versioning and the Parcel Plotter #178 handoff.
+- Preserve CC BY 4.0 attribution for vendored PTR conformance fixtures. Public
+  publication is approved after this PR is merged; retain the synthetic migration
+  fixture provenance and keep the producer repository private.
+
+- Add versioned synthetic technical-description benchmark `td-v1.0.0` (#21),
+  with explicit normalized rows, metadata, ambiguity and diagnostic expectations.
+  Report exact recovery, case status, syntax-family failures and version/commit
+  identity; compare fixed-corpus reports to expose regressions. CI runs a
+  representative subset and uploads reports; tests cover the full corpus and
+  benchmark failure/comparison behavior. Exclude document/model evaluation and
+  prohibit unapproved private inputs.
+
+- Make Shapely and pyproj optional through `ptr-core[geospatial]` (#27). Base
+  parsing, validation, local computation, exports, comparison and rigid transforms
+  remain dependency-free. Load backends only at advanced call sites and report
+  missing extras through `MissingOptionalDependencyError`.
+- Group optional implementations in `ptr_core.geospatial` with compatibility
+  imports; test base and geospatial profiles in CI. Update Parcel Plotter's
+  dependency declaration to request the extra while retaining its reviewed pin.
+
 - Review and classify the public API into core and advanced capabilities (#28).
   Add `to_technical_description` as the preferred generated-prose name, retaining
   `format_technical_description` as an exact compatibility alias. Add `is_valid`

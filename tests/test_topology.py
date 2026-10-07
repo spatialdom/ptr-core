@@ -10,6 +10,8 @@ from ptr_core import (
     reconstruct,
 )
 
+pytest.importorskip("shapely")
+
 
 def _rectangle(width: float, height: float, *, point1: Point, crs: str = "EPSG:32651"):
     record = load_ptr_mapping(

@@ -1,5 +1,4 @@
 import pytest
-from shapely.geometry import MultiPolygon, Polygon
 
 from ptr_core import (
     GeometryToCoursesError,
@@ -7,6 +6,10 @@ from ptr_core import (
     load_ptr_mapping,
     reconstruct,
 )
+
+shapely_geometry = pytest.importorskip("shapely.geometry")
+MultiPolygon = shapely_geometry.MultiPolygon
+Polygon = shapely_geometry.Polygon
 
 
 def test_derives_clockwise_ptr_courses_from_simple_polygon():

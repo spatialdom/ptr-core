@@ -15,21 +15,18 @@ maintainers = [
   { name = "Spatialdom" }
 ]
 license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md", "tests/conformance/ptr-v0.1/LICENSE.md"]
 keywords = ["cadastre", "gis", "parcel", "ptr", "survey"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Typing :: Typed",
 ]
-dependencies = [
-  "pyproj>=3.6",
-  "shapely>=2.0",
-]
+dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/spatialdom/ptr-core"
@@ -38,6 +35,8 @@ Source = "https://github.com/spatialdom/ptr-core"
 Specification = "https://github.com/spatialdom/ptr"
 
 [project.optional-dependencies]
+release = ["build>=1.2", "twine>=6.0"]
+geospatial = ["pyproj>=3.6", "shapely>=2.0"]
 dev = [
   "mypy>=1.11",
   "pytest>=8.3",
@@ -50,6 +49,7 @@ packages = ["src/ptr_core"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 88
@@ -61,7 +61,7 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.mypy]
 python_version = "3.11"
 strict = true
-packages = ["ptr_core"]
+packages = ["ptr_core", "benchmarks"]
 
 [[tool.mypy.overrides]]
 module = ["pyproj.*", "shapely.*"]

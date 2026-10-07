@@ -44,7 +44,6 @@ from ptr_core.georeferencing import (
     georeference,
 )
 from ptr_core.intake import (
-    CandidateMapping,
     IntakeResult,
     ParcelInput,
     intake_candidate,
@@ -89,7 +88,6 @@ __all__ = [
     "PTRFormattingError",
     "format_technical_description",
     "project_manual_table",
-    "CandidateMapping",
     "IntakeResult",
     "ParcelInput",
     "intake_candidate",

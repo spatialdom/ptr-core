@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- Decouple parcel intake from extraction contracts (#26). `ParcelInput` accepts
+  caller diagnostics and preserves opaque evidence; Core no longer validates
+  source bundles, extraction statuses, provenance, or warning codes.
+- Retain `intake_candidate` as a deprecated neutral-intake alias. Schema-specific
+  inputs and the `CandidateMapping` protocol are removed; external integrations
+  must adapt inputs to `ParcelInput`. See `docs/MIGRATION.md`.
+- Replace extraction-contract tests with neutral intake regression coverage for
+  partial rows, metadata conflicts, source copying, and adapter error handoffs.
+
 ## 0.1.1 - 2026-10-05
 
 - Accept explicit cardinal words and Due bearings in normalized input (#23);

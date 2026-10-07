@@ -4,8 +4,8 @@ PTR Core is the reference Python engine for Parcel Truth Records (PTR). PTR
 defines the parcel record language; PTR Core implements deterministic parsing,
 normalization, validation, and parcel computation for that language.
 
-Status: PTR Core v0.1.1 for PTR specification v0.1. Review-contract APIs also
-consume PTR Extract CandidateParcel schema 0.2 without importing PTR Extract.
+Status: PTR Core v0.1.1 for PTR specification v0.1. Intake accepts generic
+parcel text and structured readings with opaque source references.
 
 PTR Core is designed as a reusable library for Parcel Plotter, PTR Studio, QGIS
 integrations, SPARTA, Survey Kit, APIs, CLIs, and tests. It has no Django, web
@@ -61,7 +61,7 @@ Implemented foundation:
 - canonical JSON serialization;
 - PTR v0.1 bearing parsing and safe normalization;
 - shared technical-description/manual-course parsing with ordered partial rows;
-- document-candidate intake preserving provenance and uncertainty outside PTR;
+- generic parcel intake preserving evidence and caller diagnostics outside PTR;
 - generated readable descriptions and editable table projections of records;
 - layered validation diagnostics for serialization, structural, and semantic
   conformance;
@@ -214,7 +214,7 @@ coordinate frame. It emits clockwise canonical PTR bearings, rounds distances to
 the requested decimal places, and rounds bearings to the nearest second. The
 output is a computational PTR candidate, not documentary truth.
 
-## Text, Candidate Intake, And Review Formatting
+## Text, Parcel Intake, And Review Formatting
 
 ```python
 from ptr_core import (
@@ -235,12 +235,12 @@ table = project_manual_table(result.record).to_mapping()
 print(generated.text)
 ```
 
-`intake_candidate(candidate)` accepts a CandidateParcel 0.2 mapping or an object
-with `to_dict()`. It uses the same parser as manual input. A result retains raw
-text, failed rows, alternatives, source references, and warnings for review;
-`record` stays `None` when supported parcel content is incomplete or ambiguous.
-Missing optional references allow local records. Confidence never establishes
-parcel certainty, and a conforming record can still have geometry QA warnings.
+`intake_parcel(ParcelInput(...))` also accepts structured courses, tie/reference
+readings, stated area, names, and record IDs. Opaque `sources` and `context`
+survive interpretation without being validated as an external schema. Caller
+`diagnostics` can block incomplete or unresolved input while retaining partial
+rows and unparsed text. A conforming record can still have geometry QA warnings.
+External services and applications adapt their own contracts into `ParcelInput`.
 
 Generated descriptions preserve course order and numeric values without
 asserting closure or authentic source wording. `generated.omitted_fields`
@@ -248,9 +248,9 @@ identifies metadata that prose excludes; the table keeps metadata and unknown
 extensions separately and can produce a lossless `to_ptr_mapping()`.
 
 See [docs/API.md](docs/API.md) for supported grammar, typed outputs, diagnostics,
-CandidateParcel compatibility, and downstream pinning to `ptr-core==0.1.1`
-once that version is published. The APIs do not read source documents, run OCR,
-or overwrite transcriptions.
+and the neutral intake contract. See [docs/MIGRATION.md](docs/MIGRATION.md)
+for downstream adapter guidance and migration from the deprecated intake name.
+The APIs do not read source documents or overwrite transcriptions.
 
 ## PTR v0.1 Input
 

@@ -58,7 +58,7 @@ missing components and bracketed OCR noise are rejected.
 `Reference point: "..."` accepts JSON-quoted reference text. Numeric
 `Stated area: <number> square metres` and `containing an area of <number> square
 meters` clauses are supported for generated-description round trips; worded
-area extraction belongs to PTR Extract. All alternatives remain available.
+area interpretation belongs to the caller. All alternatives remain available.
 
 `rows` preserves every boundary position, including `course=None` on failure;
 `courses` is the convenience tuple of successful courses. `tie_lines`,
@@ -79,76 +79,77 @@ No ordering, destination, return, geometry or missing course is inferred.
 separate ties/values, raw unparsed spans, and diagnostics for neutral review
 handoffs. `IntakeResult.to_mapping()` includes these description mappings too.
 
-## Candidate And Manual Intake
+## Parcel Intake
 
-- `intake_parcel(text_or_ParcelInput)` returns `IntakeResult` for paste/manual
-  input. `ParcelInput` accepts `text`, `courses`, `tie_point`, `tie_line`,
-  `declared_area`, `name`, `record_id`, `reviewed`, `sources`, and `context`.
-  Structured courses may be `Course`, `[bearing, distance]`, or mappings with
-  `bearing` and `distance` (also `distance_m`), plus optional `raw_text`,
-  `candidate_id`, and `sources`. Numeric inputs share `parse_course` and
-  `parse_distance`. Different text/structured values produce `conflicting_courses`.
-- `intake_candidate(mapping_or_CandidateMapping)` consumes CandidateParcel
-  schema `0.2`. `CandidateMapping` is a `to_dict()` protocol, so an extractor
-  dataclass can be passed without Core importing PTR Extract. Binary documents,
-  OCR packages, and an ExtractionResult wrapper are not accepted here.
+- `intake_parcel(text_or_ParcelInput)` returns `IntakeResult` for text, manual,
+  and structured readings. Inputs must be text or `ParcelInput`; external
+  mappings/objects require a caller-owned adapter.
+- `ParcelInput` accepts `text`, `courses`, `tie_point`, `tie_line`,
+  `declared_area`, `name`, `record_id`, `reviewed`, `sources`, `context`, and
+  `diagnostics`. Structured courses may be `Course`, `[bearing, distance]`, or
+  mappings with `bearing` and `distance` (also `distance_m`), plus optional
+  `raw_text`, `candidate_id` (an opaque row label), `sources`,
+  `destination_point`, and `returns_to_beginning`.
+- `tie_line` accepts a structured course or supported text containing exactly
+  one tie course. `declared_area` accepts a positive finite number or supported
+  numeric string in square metres. Core does not infer or convert area units.
 
-`IntakeResult.record` is a conforming `PTRRecord` or `None`. `rows`,
-`descriptions`, `diagnostics`, `evidence`, and `reviewed` remain outside PTR;
-`to_mapping()` creates a review handoff with copied evidence and source spans.
-Structured row spans refer to the retained row text representation, not page
-offsets. `evidence` preserves raw/document text, IDs, source bundle/page order,
-source links, provenance, confidence, address/context, and all alternatives.
-Core interprets `raw_text` so parser offsets refer to that exact text; cleaned
-`document_text` remains evidence. Confidence does not affect conformance.
+All readings share deterministic parsing and normalization. Different text and
+structured courses produce `conflicting_courses`; disagreeing explicit and text
+reference/tie/area readings produce `conflicting_values`. Missing optional
+metadata allows local records, but a tie line requires a reference. Core never
+selects competing alternatives, assembles fragments, infers continuation, or
+uses opaque evidence to determine conformance.
 
-One assembled description can span several source pages. The text extractor's
-individual thence candidates are also supported when each contains one thence
-clause and a single disjoint source span, already ordered according to
-`source_bundle.ordered_pages` and page text offsets. Core never sorts pages or
-infers continuation. Competing, overlapping, or reordered descriptions require
-explicit assembly/selection. Unknown extraction warnings block record creation;
-`parcel_semantics_unchecked`, missing optional area/reference/tie information,
-and address alternatives remain warnings. Failed/low-quality pages and possible
-missing continuation block intake even if three courses were recovered.
+`ParcelInput.diagnostics` is a tuple of `Diagnostic` objects supplied by the
+caller. Any `Severity.ERROR` blocks record creation even when recovered courses
+are valid. Warnings and informational diagnostics are retained without blocking.
+Core does not interpret caller codes or layers. `reviewed` is retained as caller
+state and never overrides errors.
 
-Ambiguous/conflicting optional PTR metadata blocks intake, rather than silently
-discarding it. Address/locality is context only. Missing optional references
-allow local PTR records; a tie line still requires a reference. Explicit
-reference/tie/area readings must agree with text readings. Area intake accepts
-positive numeric square-metre readings, including `DocumentaryNumber.value`
-with a supported metric `unit_text`; number-word extraction and composite or
-other-unit area readings remain the extractor/review layer's responsibility.
-No new PTR fields are created for provenance, destinations, or review status.
+`IntakeResult.record` is a conforming `PTRRecord` or `None`. Ordered `rows`,
+`descriptions` (including ties, values and unparsed spans), `diagnostics`,
+`evidence`, and `reviewed` remain outside PTR. `evidence` retains all supplied
+readings, `sources`, `context`, caller diagnostics, and review state with copied
+nested mappings. Sources are opaque mapping sequences: Core copies their contents
+without resolving IDs or validating any document or service contract. Text rows
+retain source associations; structured rows can supply their own sources. Row
+spans refer to retained row text, while parsed text spans use exact input offsets.
+When both text and courses are supplied, returned rows use text spans and the
+structured representation remains in evidence.
 
-Stable intake codes include `unsupported_candidate_version`,
-`invalid_source_bundle`, `invalid_source_reference`, `invalid_provenance`,
-`invalid_candidate_field`, `invalid_candidate_id`, `invalid_candidate_status`,
-`invalid_candidate_text`, `invalid_candidate`, `uncertain_candidate`,
-`multiple_candidates`, `conflicting_values`, `conflicting_courses`,
-`invalid_tie_line`, `invalid_stated_area`, and `failed_pages`. Parser and existing
-PTR validation codes are retained; extraction diagnostics use the extractor's
-original code and the `extraction` layer.
+`to_mapping()` creates a review handoff with separately copied evidence and
+source spans. Use JSON-compatible opaque evidence when a JSON handoff is needed.
+No new PTR fields are created for sources, destinations, diagnostics, or review.
+
+Stable intake codes include `invalid_source_reference`, `conflicting_values`,
+`conflicting_courses`, `invalid_destination`, `invalid_tie_line`, and
+`invalid_stated_area`, alongside parser and PTR validation codes. Caller
+codes pass through unchanged.
 
 ```python
-from ptr_core import ParcelInput, intake_candidate, intake_parcel, qa_report
+from ptr_core import Diagnostic, ParcelInput, intake_parcel, qa_report
 
 manual = intake_parcel(ParcelInput(
     courses=(["Due North", "10"], ["East", 10], ["South", 10], ["West", 10]),
+    sources=({"reference": "opaque:survey-1"},),
     reviewed=True,
 ))
 assert manual.record is not None
-report = qa_report(manual.record)  # geometry warnings do not invalidate intake
+report = qa_report(manual.record)
 
-# extracted is CandidateParcel 0.2 from PTR Extract, or its JSON mapping.
-# result = intake_candidate(extracted)
-# downstream review keeps result.evidence and result.diagnostics separately
+partial = intake_parcel(ParcelInput(
+    text="thence North, 10 m; thence East, 10 m; thence South, 10 m;",
+    diagnostics=(Diagnostic("adapter", "incomplete_input", "More input is needed."),),
+    context={"alternatives": ["unresolved reading"]},
+))
+assert partial.record is None
+assert len(partial.rows) == 3
 ```
 
-Pin downstream integrations to `ptr-core==0.1.1` once published (or to the
-reviewed commit of this branch before publication). Supported PTR stays `0.1`;
-CandidateParcel `0.2` is a separate input schema. Core does not change downstream
-review state or write original transcriptions.
+The deprecated `intake_candidate` name is a warning-emitting alias for neutral
+intake only. See [migration and external adapters](MIGRATION.md) before upgrading
+an integration that used schema-specific intake. Supported PTR remains `0.1`.
 
 ## Generated Description And Editable Table
 

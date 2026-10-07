@@ -1,6 +1,4 @@
-import json
 from dataclasses import replace
-from pathlib import Path
 
 import pytest
 
@@ -9,7 +7,6 @@ from ptr_core import (
     ParcelInput,
     PTRFormattingError,
     format_technical_description,
-    intake_candidate,
     intake_parcel,
     load_ptr_mapping,
     parse_bearing,
@@ -144,11 +141,15 @@ def test_invalid_records_fail_with_explicit_diagnostics(change, formatter):
     assert error.value.diagnostics
 
 
-def test_extract_intake_generated_description_intake_round_trip():
-    path = Path(__file__).parent / "fixtures" / "intake" / "extract-text-v0.2.json"
-    source = json.loads(path.read_text(encoding="utf-8"))
-    original = intake_candidate(source)
+def test_neutral_intake_generated_description_intake_round_trip():
+    source = ParcelInput(
+        text="Beginning at point 1, being Due West, 25 m from BLLM No. 1; "
+        "thence North, 10 m; thence East, 10 m; thence South, 10 m; thence West, 10 m;",
+        declared_area=100,
+        sources=({"reference": "opaque:survey"},),
+    )
+    original = intake_parcel(source)
     generated = format_technical_description(original.record)
     round_trip = intake_parcel(generated.text)
     assert round_trip.record == original.record
-    assert original.evidence == source
+    assert original.evidence["sources"] == list(source.sources)

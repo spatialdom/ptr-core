@@ -16,7 +16,8 @@ def test_public_api_exports_expected_v01_entry_points():
         "parse_distance",
         "parse_technical_description",
         "intake_parcel",
-        "intake_candidate",
+        "ParcelInput",
+        "IntakeResult",
         "format_technical_description",
         "project_manual_table",
         "validate",
@@ -48,3 +49,8 @@ def test_unsupported_ptr_version_has_explicit_error_and_diagnostic():
     assert result.errors[0].code == "unsupported_ptr_version"
     with pytest.raises(PTRUnsupportedVersionError):
         load_ptr_mapping(mapping)
+
+
+def test_schema_specific_protocol_is_not_public():
+    assert "CandidateMapping" not in ptr_core.__all__
+    assert not hasattr(ptr_core, "CandidateMapping")

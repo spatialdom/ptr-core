@@ -19,10 +19,22 @@ From this repository:
 python -m pip install -e .
 ```
 
-For development:
+The base install has no runtime dependencies. It includes loading, parsing,
+validation, local geometry/metrics, and GeoJSON/WKT output. Install the optional
+GEOS/PROJ backends for topology, polygon-to-course conversion, and CRS transforms:
 
 ```bash
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[geospatial]"
+# published package: python -m pip install "ptr-core[geospatial]"
+```
+
+Advanced imports remain available in the base install. Calls that need a missing
+backend raise `MissingOptionalDependencyError` with the install command.
+
+For development (including advanced geospatial tests):
+
+```bash
+python -m pip install -e ".[dev,geospatial]"
 pytest
 ruff check .
 mypy
@@ -178,7 +190,7 @@ topology = analyze_topology(
 
 Topology results expose compatible-frame status, overlap area, containment,
 point-touching, shared-edge adjacency, shared-boundary length, and gap distance.
-PTR Core uses Shapely/GEOS behind this API for polygon topology; tolerances are
+PTR Core uses Shapely/GEOS from the `geospatial` extra for polygon topology; tolerances are
 explicit and no parcel geometry is automatically snapped or repaired.
 
 ## Transforms
@@ -195,7 +207,8 @@ projected = transform_crs(
 )
 ```
 
-Translation and rotation are local rigid-body transforms. CRS transforms require
+Translation and rotation are local rigid-body transforms available in the base
+install. CRS transforms use pyproj/PROJ from the `geospatial` extra and require
 explicit source and target CRS identifiers. Each transform returns a separate
 derived geometry object with reproducible metadata and leaves the source PTR
 record unchanged.
@@ -213,7 +226,7 @@ candidate = derive_courses_from_polygon(
 ptr_like = candidate.to_mapping()
 ```
 
-Geometry-to-course conversion accepts simple polygons in a known metric
+Geometry-to-course conversion requires the `geospatial` extra and accepts simple polygons in a known metric
 coordinate frame. It emits clockwise canonical PTR bearings, rounds distances to
 the requested decimal places, and rounds bearings to the nearest second. The
 output is a computational PTR candidate, not documentary truth.

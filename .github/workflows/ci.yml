@@ -6,12 +6,13 @@ on:
 
 jobs:
   test:
-    name: Python ${{ matrix.python-version }}
+    name: Python ${{ matrix.python-version }} / ${{ matrix.install-profile }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
+        install-profile: ["dev", "dev,geospatial"]
 
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +21,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
       - name: Install
-        run: python -m pip install -e ".[dev]"
+        run: python -m pip install -e ".[${{ matrix.install-profile }}]"
       - name: Ruff
         run: ruff check .
       - name: Mypy

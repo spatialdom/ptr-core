@@ -8,6 +8,7 @@ from ptr_core.comparisons import (
     compare_parcels,
 )
 from ptr_core.errors import (
+    MissingOptionalDependencyError,
     PTRError,
     PTRParseError,
     PTRSerializationError,
@@ -121,6 +122,7 @@ __all__ = [
     "GeoreferencingError",
     "ParcelMetrics",
     "PTRError",
+    "MissingOptionalDependencyError",
     "PTRRecord",
     "PTRParseError",
     "PTRSerializationError",

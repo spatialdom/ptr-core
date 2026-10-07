@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Make Shapely and pyproj optional through `ptr-core[geospatial]` (#27). Base
+  parsing, validation, local computation, exports, comparison and rigid transforms
+  remain dependency-free. Load backends only at advanced call sites and report
+  missing extras through `MissingOptionalDependencyError`.
+- Group optional implementations in `ptr_core.geospatial` with compatibility
+  imports; test base and geospatial profiles in CI. Update Parcel Plotter's
+  dependency declaration to request the extra while retaining its reviewed pin.
+
 - Review and classify the public API into core and advanced capabilities (#28).
   Add `to_technical_description` as the preferred generated-prose name, retaining
   `format_technical_description` as an exact compatibility alias. Add `is_valid`

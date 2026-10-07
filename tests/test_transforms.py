@@ -1,3 +1,5 @@
+from importlib.util import find_spec
+
 import pytest
 
 from ptr_core import (
@@ -76,6 +78,7 @@ def test_transform_crs_requires_explicit_source_and_target_crs():
         transform_crs(parcel, source_crs="EPSG:4326", target_crs="")
 
 
+@pytest.mark.skipif(find_spec("pyproj") is None, reason="Requires geospatial extra")
 def test_transform_crs_uses_explicit_crs_and_is_reversible():
     parcel = georeference(
         _tied_square(),
@@ -116,6 +119,7 @@ def test_transform_crs_rejects_conflicting_parcel_crs_metadata():
         transform_crs(parcel, source_crs="EPSG:3857", target_crs="EPSG:4326")
 
 
+@pytest.mark.skipif(find_spec("shapely") is None, reason="Requires geospatial extra")
 def test_transformed_geometry_integrates_with_export_topology_and_comparison():
     parcel = _square()
     moved = translate(parcel, dx=10.0, dy=0.0)

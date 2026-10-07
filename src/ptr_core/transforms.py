@@ -4,12 +4,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import cos, radians, sin
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from pyproj import Transformer
+if TYPE_CHECKING:
+    from pyproj import Transformer
 
 from ptr_core.geometry import DerivedParcel, Point
 from ptr_core.georeferencing import GeoreferencedParcel
+from ptr_core.geospatial.crs import create_transformer
 
 
 class TransformError(ValueError):
@@ -115,7 +117,7 @@ def transform_crs(
     if parcel_crs is not None and parcel_crs != source_crs:
         raise TransformError("source_crs does not match the parcel CRS metadata.")
 
-    transformer = Transformer.from_crs(source_crs, target_crs, always_xy=True)
+    transformer = create_transformer(source_crs, target_crs)
     step = TransformStep(
         "transform_crs",
         {"source_crs": source_crs, "target_crs": target_crs},

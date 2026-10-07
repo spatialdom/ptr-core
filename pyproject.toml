@@ -26,10 +26,7 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Typing :: Typed",
 ]
-dependencies = [
-  "pyproj>=3.6",
-  "shapely>=2.0",
-]
+dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/spatialdom/ptr-core"
@@ -38,6 +35,7 @@ Source = "https://github.com/spatialdom/ptr-core"
 Specification = "https://github.com/spatialdom/ptr"
 
 [project.optional-dependencies]
+geospatial = ["pyproj>=3.6", "shapely>=2.0"]
 dev = [
   "mypy>=1.11",
   "pytest>=8.3",

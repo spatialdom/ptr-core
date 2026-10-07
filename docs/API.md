@@ -349,3 +349,19 @@ conditions are reported as diagnostics/findings rather than exceptions.
 PTR Core `0.x` is pre-stable. The v0.1 public API is intended to remain usable
 through compatible `0.1.x` releases, but future minor `0.x` releases may refine
 names or return objects before a stable `1.0`.
+
+## Paste compatibility and source precision
+
+`ParsedCourse.distance_text` retains the readable distance lexeme (grouping
+commas removed) separately from the numeric course. Source spans remain exact
+offsets in the original input. Consumers can retain trailing zeroes and precision
+without scanning source grammar themselves. Structured rows may leave this
+field unset; the numeric course remains authoritative.
+
+The generic TD parser supports integer number-word areas, explicit parenthesized
+numeric stated areas, and numeric square-decimetre documentary wrappers. Written
+and numeric area contradictions retain both values and block intake. A beginning
+point marker without a `being ... from ...` tie course is informational context.
+Core still rejects malformed grouping, leading-zero bearing degrees and OCR
+anchor/character repairs. Unsuccessful readings and their source spans survive
+for explicit review. No CandidateParcel knowledge is introduced.

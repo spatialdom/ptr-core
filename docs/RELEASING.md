@@ -16,10 +16,9 @@ are documented separately from library API compatibility.
 
 ## Current publication gates
 
-Prepare v0.1.1 on the existing `depenndecies-cleanup` branch and merge through
-the reviewed PR before publication. Keep the default branch unchanged. The wheel
-and source archive must correspond to the same reviewed merged commit and
-package version.
+Release preparation for v0.1.1 was merged in PR #29. Publish from reviewed
+`main` after the publication workflow PR is merged. The wheel and source archive
+must correspond to the same reviewed merged commit and package version.
 
 The prepublication audit on 2026-10-07 covered 18 reachable commits, 175 unique
 file blobs, and 108 log files from eight available Actions runs. A scan for
@@ -39,11 +38,10 @@ of the fixture provenance and historical copies. This approval covers public
 distribution of the copies in Core under its MIT license; it does not make the
 producer repository public or grant a license to its other contents.
 
-GitHub reported PTR Core as public during PR review on 2026-10-07. The remaining
-artifact publication gate is **merge of the release-preparation PR**. After
-merge, build/tag the reviewed merged commit and publish the verified GitHub
-release. PyPI publication remains conditional on an approved publisher being
-configured.
+GitHub reported PTR Core as public on 2026-10-07. PR #29 is merged, but no tags
+or releases existed when the publication workflow was prepared. The remaining
+gate is a successful publication run and anonymous installation verification.
+PyPI publication remains conditional on an approved publisher being configured.
 
 Changing GitHub visibility exposes source history, issues, and available Actions
 logs to the public. Only `spatialdom/ptr-core` is approved for this visibility
@@ -71,17 +69,36 @@ Build from a clean reviewed checkout; do not distribute unrelated stale files
 from `dist`. Source archives include test provenance and benchmarks; wheels
 contain the reusable library and license notices.
 
-The `Release artifacts` workflow runs on version tags or manual dispatch. It
-builds and verifies distributions, retains them as Actions artifacts, and for
-tags creates a **draft** GitHub release. It does not change repository visibility,
-publish drafts, or upload to PyPI. Re-running an existing tag does not overwrite
-a release; use a new version rather than replacing published assets.
+The `Release artifacts` workflow checks packaging changes in PRs and runs on
+version tags or manual dispatch. Every run lints/types the source, builds and
+verifies distributions, and retains verification reports as Actions artifacts.
+A manual run defaults to verification only. To publish after this PR is merged:
 
-After the PR is merged and artifact review is complete, create an annotated version tag
-at the reviewed branch commit, push that tag, and publish the verified draft.
-Enable immutable releases where the repository supports them, and never move a
-published tag. Verify an anonymous download/install of the released wheel and
-the GitHub tag after publication. The release notes provide exact artifact URLs.
+```bash
+gh workflow run release.yml --repo spatialdom/ptr-core --ref main -f publish=true
+gh run list --repo spatialdom/ptr-core --workflow release.yml --limit 1
+gh run watch <run-id> --repo spatialdom/ptr-core --exit-status
+```
+
+Publication requires a commit already merged into `main`; manual publication
+must select the current `main`. The workflow creates an annotated tag matching
+the package version only after verification succeeds, then publishes the wheel,
+source distribution and `SHA256SUMS`. An existing tag must point to the same
+commit, and an existing release is never overwritten. Pushing a matching version
+tag at a reviewed commit also runs verification and publication directly.
+
+The final step downloads all three assets without authentication, checks both
+distribution hashes, and installs/smoke-tests the public wheel in fresh base and
+geospatial environments. A failed post-publication check leaves the release
+visible for investigation; do not replace its assets or move its tag. Inspect the
+failure before deciding whether a new version is necessary. The workflow does
+not change repository visibility or upload to PyPI. Enable immutable releases
+where supported.
+
+After a successful publication run, update README's release-candidate status
+and confirm the public asset URLs work before closing #18. Parcel Plotter can
+then consume the immutable release; its actual dependency migration remains
+tracked separately in Parcel Plotter #178.
 
 No PyPI upload token, publishing environment, or trusted-publisher configuration
 is currently established here. GitHub wheel/sdist assets are the initial

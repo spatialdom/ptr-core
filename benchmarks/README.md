@@ -12,11 +12,29 @@ python -m benchmarks.technical_description --subset ci --output .benchmark-resul
 python -m benchmarks.technical_description --baseline .benchmark-results/baseline.json --output .benchmark-results/current.json
 ```
 
-The default corpus is [td-v1/corpus.json](corpora/td-v1/corpus.json), version
-`td-v1.0.0`: 25 cases, with a fixed CI selection covering every syntax family.
+The default corpus is [td-v2/corpus.json](corpora/td-v2/corpus.json), version
+`td-v2.0.0`: 25 cases, with a fixed CI selection covering every syntax family.
 All text is newly authored synthetic material released under the repository's
 MIT license. Expectations are explicit and reviewed independently of actual
 parser output; the runner never generates or updates expected answers.
+
+## Corpus revisions
+
+`td-v2.0.0` incorporates the intentional parser changes in [PR #30](https://github.com/spatialdom/ptr-core/pull/30):
+
+- `unparsed-middle-row`: `unreadable` is an unrecognized course, rather than
+  a valid bearing with a missing distance. The failed row stays unresolved;
+  parser and intake categories are `too_few_courses` and `unrecognized_course`.
+- `unsupported-number-words`: `ONE HUNDRED square metres` now supplies an
+  unambiguous stated area of 100. Parser and intake succeed without diagnostics.
+  The historical case ID is retained across corpus revisions.
+
+All other inputs, expectations, and CI selections are unchanged. The full corpus
+now has 15 complete, 8 partial, and 2 rejected cases; supported courses remain 71.
+[td-v1/corpus.json](corpora/td-v1/corpus.json), version `td-v1.0.0`, is preserved
+unchanged for historical comparisons. Running it with the newer parser produces
+two intentional mismatches. Baselines from v1 cannot be compared to v2; establish
+a new baseline with the revised corpus.
 
 ## Expected outputs and metrics
 

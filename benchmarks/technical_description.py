@@ -14,7 +14,7 @@ from typing import Any
 import ptr_core
 from ptr_core import intake_parcel, parse_technical_description
 
-DEFAULT_CORPUS = Path(__file__).parent / "corpora" / "td-v1" / "corpus.json"
+DEFAULT_CORPUS = Path(__file__).parent / "corpora" / "td-v2" / "corpus.json"
 EXPECTED_FIELDS = {
     "courses",
     "destinations",

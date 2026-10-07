@@ -46,7 +46,8 @@ def verify(dist: Path, tag: str | None = None) -> None:
         names = set(archive.getnames())
         prefix = f"ptr_core-{version}/"
         assert prefix + "tests/conformance/ptr-v0.1/LICENSE.md" in names
-        assert prefix + "benchmarks/corpora/td-v1/corpus.json" in names
+        for revision in ("td-v1", "td-v2"):
+            assert prefix + f"benchmarks/corpora/{revision}/corpus.json" in names
         assert prefix + "THIRD_PARTY_NOTICES.md" in names
         assert not any(
             ".benchmark-results/" in name or "/.env" in name for name in names

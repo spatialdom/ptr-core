@@ -14,12 +14,28 @@ def test_full_corpus_has_explicit_passing_expectations():
     assert report["summary"]["supported_course_recovery"] == 1.0
     assert report["summary"]["diagnostic_category_accuracy"] == 1.0
     assert report["summary"]["status_counts"] == {
-        "complete": 14,
-        "partial": 9,
+        "complete": 15,
+        "partial": 8,
         "rejected": 2,
     }
     assert report["core"]["version"] == benchmark.ptr_core.__version__
     assert set(report["core"]) == {"version", "commit", "dirty"}
+
+
+def test_historical_corpus_is_preserved_and_cannot_be_a_v2_baseline():
+    original_path = benchmark.DEFAULT_CORPUS.parent.parent / "td-v1" / "corpus.json"
+    original, digest = benchmark.load_corpus(original_path)
+    assert original["corpus_version"] == "td-v1.0.0"
+    assert digest == "6d760d15f4460a52026375e6a7c28045010a8773b274eb3a0fd82491e44c8190"
+    historical = benchmark.run_benchmark(original_path)
+    assert {case["id"] for case in historical["cases"] if not case["passed"]} == {
+        "unparsed-middle-row",
+        "unsupported-number-words",
+    }
+    current = benchmark.run_benchmark()
+    assert current["corpus"]["version"] == "td-v2.0.0"
+    with pytest.raises(ValueError, match="Baseline"):
+        benchmark.compare_reports(current, historical)
 
 
 def test_ci_subset_represents_every_family_and_is_deterministic():

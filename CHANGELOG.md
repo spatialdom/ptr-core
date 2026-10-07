@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Revise the default parser benchmark to `td-v2.0.0` for PR #30's intentional
+  number-word area support and unrecognized-course diagnostic. Preserve the
+  original corpus and reject comparisons across revisions.
+
 - Prepare public distribution (#18) with verified wheel/source artifacts,
   checksums, isolated install tests and a draft-only GitHub release workflow.
   Document independent library/PTR versioning and the Parcel Plotter #178 handoff.

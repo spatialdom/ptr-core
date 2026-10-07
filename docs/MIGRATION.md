@@ -45,7 +45,7 @@ pages or reconstruct source offsets. Keep the original fragments and offsets in
 `context`. Core parser offsets refer to the exact assembled text supplied.
 Use structured per-course sources when distinct course associations are needed.
 
-Number-word interpretation, documentary-number wrappers, metric unit checks,
+Candidate documentary-number wrappers, metric unit checks,
 source bundle/page validation, extraction status interpretation, and warning
 classification belong to this adapter. Missing optional area/reference/tie
 readings need not block local records. An unresolved parcel reading, failed
@@ -166,3 +166,14 @@ migration remains necessary when advancing past the neutral-intake change.
 Core CI tests both `.[dev]` and `.[dev,geospatial]` installations. Tests requiring
 an installed backend skip in the base profile; base workflow and missing-backend
 errors run in both profiles. GEOS/PROJ functionality is not reimplemented.
+
+### Parcel Plotter legacy parser removal
+
+The generic text parser now supports the common number-word/parenthesized stated
+areas used by pasted TD descriptions. Documentary extraction still owns candidate
+number status, source validation and unit confirmation. `distance_text` lets the
+application map the established editor response without introducing TD regexes.
+The existing frozen migration fixture/observation suite covers grammar, and
+`test_plotter_compatibility.py` covers area parity, original spans, precision,
+and the beginning-marker demo. The consuming app retains its historical corpus
+and tests that unsuccessful positions survive the application adapter.

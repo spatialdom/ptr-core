@@ -39,14 +39,15 @@ of the fixture provenance and historical copies. This approval covers public
 distribution of the copies in Core under its MIT license; it does not make the
 producer repository public or grant a license to its other contents.
 
-The remaining publication gate is **merge of the release-preparation PR**. Keep
-PTR Core private until that merge is complete. Then update repository visibility,
-build/tag the reviewed merged commit, and publish the verified GitHub release.
-PyPI publication remains conditional on an approved publisher being configured.
+GitHub reported PTR Core as public during PR review on 2026-10-07. The remaining
+artifact publication gate is **merge of the release-preparation PR**. After
+merge, build/tag the reviewed merged commit and publish the verified GitHub
+release. PyPI publication remains conditional on an approved publisher being
+configured.
 
 Changing GitHub visibility exposes source history, issues, and available Actions
-logs to the public. Make only `spatialdom/ptr-core` public after review; PTR is
-already public and PTR Extract remains private. Current history must be reviewed
+logs to the public. Only `spatialdom/ptr-core` is approved for this visibility
+change; PTR is already public and PTR Extract remains private. Current history must be reviewed
 again if additional commits or repository content arrive before publication.
 
 ## Build and verification

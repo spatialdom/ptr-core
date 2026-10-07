@@ -31,7 +31,7 @@ mypy
 ## Quick Start
 
 ```python
-from ptr_core import dumps_ptr, load_ptr, parse_bearing, validate
+from ptr_core import dumps_ptr, is_valid, load_ptr, parse_bearing, validate
 
 record = load_ptr(
     """
@@ -46,7 +46,8 @@ record = load_ptr(
     """
 )
 
-assert validate(record).conforms
+assert is_valid(record)
+assert validate(record).conforms  # detailed diagnostics remain available
 assert parse_bearing("N 68 deg 28' E").canonical == "N68-28E"
 print(dumps_ptr(record))
 ```
@@ -80,7 +81,10 @@ taxation, zoning, or other contextual logic.
 
 The v0.1 public API is exported from `ptr_core`; applications should not need to
 import internal modules. See `docs/API.md` for the entry points, return objects,
-exception hierarchy, and `0.x` stability expectations.
+exception hierarchy, core/advanced inventory, and `0.x` stability expectations.
+`is_valid` checks PTR conformance; geometry QA remains separate. Generated prose
+uses `to_technical_description`; `format_technical_description` remains an exact
+compatibility alias for existing integrations.
 
 PTR Core currently supports PTR specification versions:
 
@@ -218,7 +222,7 @@ output is a computational PTR candidate, not documentary truth.
 
 ```python
 from ptr_core import (
-    format_technical_description,
+    to_technical_description,
     intake_parcel,
     parse_technical_description,
     project_manual_table,
@@ -230,7 +234,7 @@ parsed = parse_technical_description(text)
 assert parsed.complete
 result = intake_parcel(text)
 assert result.record is not None
-generated = format_technical_description(result.record)
+generated = to_technical_description(result.record)
 table = project_manual_table(result.record).to_mapping()
 print(generated.text)
 ```

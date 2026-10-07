@@ -21,6 +21,7 @@ from ptr_core.formatting import (
     PTRFormattingError,
     format_technical_description,
     project_manual_table,
+    to_technical_description,
 )
 from ptr_core.geometry import (
     AreaComparison,
@@ -77,7 +78,13 @@ from ptr_core.transforms import (
     transform_crs,
     translate,
 )
-from ptr_core.validation import Diagnostic, Severity, ValidationResult, validate
+from ptr_core.validation import (
+    Diagnostic,
+    Severity,
+    ValidationResult,
+    is_valid,
+    validate,
+)
 
 __all__ = [
     "Bearing",
@@ -88,6 +95,7 @@ __all__ = [
     "PTRFormattingError",
     "format_technical_description",
     "project_manual_table",
+    "to_technical_description",
     "IntakeResult",
     "ParcelInput",
     "intake_candidate",
@@ -147,6 +155,7 @@ __all__ = [
     "transform_crs",
     "translate",
     "validate",
+    "is_valid",
 ]
 
 __version__ = "0.1.1"

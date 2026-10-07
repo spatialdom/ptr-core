@@ -3,6 +3,45 @@
 PTR Core v0.1 exposes normal application entry points from `ptr_core`. Downstream
 applications should not need to import internal modules.
 
+## Public Surface Inventory
+
+Core entry points cover the common record workflow. Advanced exports support
+explicit control, derived spatial operations, or inspection of typed results.
+Both groups are supported from `ptr_core`; this classification does not change
+imports or stability. Compatibility names remain available separately.
+
+| Class | Capability | Public exports |
+| --- | --- | --- |
+| Core | Read and write records | `load_ptr`, `dumps_ptr`, `dump_ptr` |
+| Core | Interpret parcel readings | `intake_parcel`, `ParcelInput`, `IntakeResult` |
+| Core | Normalize and parse | `parse_bearing`, `parse_course`, `parse_technical_description` |
+| Core | Check conformance and QA | `validate`, `is_valid`, `qa_report` |
+| Core | Derive local geometry and metrics | `reconstruct`, `compute_metrics` |
+| Core | Generate prose and editable rows | `to_technical_description`, `project_manual_table` |
+| Core | Export derived geometry | `to_geojson`, `to_wkt` |
+| Core | Record and diagnostic types | `PTRRecord`, `Course`, `Bearing`, `Diagnostic`, `Severity`, `ValidationResult` |
+| Advanced | Explicit loading and numeric/vector parsing | `load_ptr_text`, `load_ptr_mapping`, `parse_distance`, `course_to_vector` |
+| Advanced | Spatial operations | `georeference`, `compare_parcels`, `analyze_topology`, `translate`, `rotate`, `transform_crs`, `derive_courses_from_polygon` |
+| Advanced | Interpretation and formatting results | `ParsedCourse`, `ParsedValue`, `SourceSpan`, `TechnicalDescriptionResult`, `GeneratedDescription`, `CourseRow`, `ManualTableProjection` |
+| Advanced | Geometry and metric results | `Point`, `Vector`, `DerivedParcel`, `ParcelMetrics`, `Closure`, `AreaComparison`, `GeoreferencedParcel`, `TransformedParcel`, `TransformStep`, `PTRCourseCandidate` |
+| Advanced | Comparison and topology results | `BoundingBox`, `CourseComparison`, `ComparisonResult`, `TopologyResult`, `QAReport` |
+| Advanced | Exceptions | `PTRError`, `PTRParseError`, `PTRSerializationError`, `PTRUnsupportedVersionError`, `BearingError`, `CourseParseError`, `PTRFormattingError`, `GeoreferencingError`, `TransformError`, `GeometryToCoursesError` |
+| Compatibility | Earlier prose-generation name | `format_technical_description` (exact alias of `to_technical_description`) |
+| Deprecated | Earlier intake name | `intake_candidate` (neutral input only; see migration guide) |
+
+`SUPPORTED_PTR_VERSIONS` and `__version__` describe format support and package
+version respectively. Every other supported package export appears above.
+
+The naming review retains `validate`, `reconstruct`, `compute_metrics`, the
+GeoJSON/WKT exports, and Python's conventional load/dump names. `reconstruct`
+specifically derives an unadjusted local traverse from documentary courses;
+`compute_metrics` exposes a coherent result with units and closure components.
+Standalone `compute_area`, `compute_perimeter`, and `compute_misclosure` helpers
+are deliberately omitted: they would duplicate result fields and leave unclear
+whether inputs were records or geometry, and whether misclosure meant a vector,
+a length, or a ratio. Use `parcel.metrics.area` (square metres), `.perimeter`
+(metres), and `.closure` (`east`, `north`, `linear` in metres).
+
 ## Supported PTR Versions
 
 `SUPPORTED_PTR_VERSIONS` is `("0.1",)`.
@@ -153,8 +192,11 @@ an integration that used schema-specific intake. Supported PTR remains `0.1`.
 
 ## Generated Description And Editable Table
 
-- `format_technical_description(record)` returns `GeneratedDescription` with
-  `text`, `omitted_fields`, and warning `diagnostics`. The text identifies itself
+- `to_technical_description(record)` is the preferred generation name.
+  `format_technical_description` remains an exact compatibility alias with the
+  same signature, result, and exceptions, without a deprecation warning. It
+  returns `GeneratedDescription` with `text`, `omitted_fields`, and warning
+  `diagnostics`. The text identifies itself
   as generated and preserves boundary order, cardinals, quadrants, seconds,
   numeric distances, tie point/tie line, and numeric stated area. It performs no
   geometry computation and never infers a return to the point of beginning.
@@ -183,12 +225,12 @@ Projection does not add fields to PTR or write source documents.
 
 ```python
 from ptr_core import (
-    format_technical_description, intake_parcel, load_ptr_mapping,
+    to_technical_description, intake_parcel, load_ptr_mapping,
     project_manual_table,
 )
 
 # record is an existing conforming PTRRecord.
-generated = format_technical_description(record)
+generated = to_technical_description(record)
 round_trip = intake_parcel(generated.text)
 assert round_trip.record.lines == record.lines
 assert round_trip.record.tie_line == record.tie_line
@@ -200,6 +242,11 @@ assert load_ptr_mapping(table.to_ptr_mapping()) == record
 
 - `validate(source)` returns `ValidationResult`; expected conformance failures
   are diagnostics, not exceptions.
+- `is_valid(source)` returns `validate(source).conforms` as a boolean for the
+  same JSON-text, mapping, and record inputs. It checks strict PTR serialization,
+  structural, and semantic conformance; it does not assert geometric closure,
+  source authenticity, or legal/cadastral validity. Use `validate` when the
+  caller needs the reasons for rejection.
 - `qa_report(source)` returns `QAReport`, combining validation, metrics, and
   geometric QA findings in deterministic machine-readable order.
 

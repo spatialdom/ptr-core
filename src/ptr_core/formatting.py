@@ -121,7 +121,7 @@ def _course_text(course: Course) -> str:
     return f"{bearing}, {course.distance} metres"
 
 
-def format_technical_description(record: PTRRecord) -> GeneratedDescription:
+def to_technical_description(record: PTRRecord) -> GeneratedDescription:
     """Generate readable course prose, never verbatim/certified survey wording."""
     _require_record(record)
     lines = ["Generated technical description."]
@@ -152,3 +152,7 @@ def format_technical_description(record: PTRRecord) -> GeneratedDescription:
             ),
         )
     return GeneratedDescription("\n".join(lines) + "\n", omitted, diagnostics)
+
+
+# Preserve the original public name, including its signature and exceptions.
+format_technical_description = to_technical_description

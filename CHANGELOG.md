@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Review and classify the public API into core and advanced capabilities (#28).
+  Add `to_technical_description` as the preferred generated-prose name, retaining
+  `format_technical_description` as an exact compatibility alias. Add `is_valid`
+  for boolean PTR conformance while preserving detailed `validate` diagnostics.
+  Retain existing geometry, metric, export, and loading names; document the
+  metric-helper decision and Parcel Plotter compatibility.
+
 - Decouple parcel intake from extraction contracts (#26). `ParcelInput` accepts
   caller diagnostics and preserves opaque evidence; Core no longer validates
   source bundles, extraction statuses, provenance, or warning codes.

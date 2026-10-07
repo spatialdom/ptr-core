@@ -118,3 +118,25 @@ readings and the remaining blockers. `reviewed=True` never bypasses errors. A
 conforming record still needs separate geometry QA, and does not establish legal
 or cadastral certainty. These adapter recipes introduce no dependency on an
 application, producer library, or document-processing package inside Core.
+
+## Public naming compatibility
+
+Prefer `to_technical_description(record)` for generated PTR prose. Existing
+Parcel Plotter calls to `format_technical_description(record)` remain supported
+without warnings: both names reference the same function, return the same
+`GeneratedDescription` attributes (`text`, `omitted_fields`, `diagnostics`), and
+raise the same formatting exceptions. Neither API reconstructs source text;
+the output explicitly identifies itself as generated. Applications can change
+imports independently of stored records and review response shapes.
+
+`is_valid(source)` is optional convenience for `validate(source).conforms`.
+Keep `validate` wherever diagnostics are displayed or retained. No geometry,
+loading/serialization, or metric API is renamed. See the core/advanced inventory
+in [API.md](API.md) for the complete naming review.
+
+Core regression tests exercise the legacy and preferred formatting names and
+Parcel Plotter's review attribute/table handoff. The consumer's structured
+compute, technical-description parser, and manual/record review paths can also
+be tested against this checkout by placing its `src` directory first on
+`PYTHONPATH`; no application dependency is added to Core. External candidate
+review still requires the separate neutral-intake migration described above.

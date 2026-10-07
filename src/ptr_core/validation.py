@@ -102,6 +102,14 @@ def validate(source: str | Mapping[str, Any] | object) -> ValidationResult:
     )
 
 
+def is_valid(source: str | Mapping[str, Any] | object) -> bool:
+    """Return PTR conformance, without asserting geometry or cadastral validity.
+
+    Accept the same inputs as validate(); use validate() for diagnostics.
+    """
+    return validate(source).conforms
+
+
 def validate_mapping(
     data: Mapping[str, Any], *, accept_noncanonical_bearings: bool = False
 ) -> ValidationResult:

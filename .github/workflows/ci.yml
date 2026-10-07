@@ -28,4 +28,14 @@ jobs:
         run: mypy
       - name: Pytest
         run: pytest
+      - name: Parser benchmark
+        if: always()
+        run: python -m benchmarks.technical_description --subset ci --output .benchmark-results/td-ci.json
+      - name: Upload parser benchmark report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: parser-benchmark-${{ matrix.python-version }}-${{ matrix.install-profile }}
+          path: .benchmark-results/td-ci.json
+          if-no-files-found: ignore
 

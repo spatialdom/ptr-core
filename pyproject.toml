@@ -48,6 +48,7 @@ packages = ["src/ptr_core"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 88
@@ -59,7 +60,7 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.mypy]
 python_version = "3.11"
 strict = true
-packages = ["ptr_core"]
+packages = ["ptr_core", "benchmarks"]
 
 [[tool.mypy.overrides]]
 module = ["pyproj.*", "shapely.*"]

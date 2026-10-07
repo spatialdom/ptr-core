@@ -1,0 +1,1082 @@
+{
+  "schema_version": 1,
+  "corpus_version": "td-v1.0.0",
+  "rights": {
+    "policy": "synthetic-only",
+    "license": "MIT",
+    "provenance": "Fresh synthetic text authored for PTR Core benchmark #21. No private documents, source corpus, OCR output, or personal data copied."
+  },
+  "cases": [
+    {
+      "id": "cardinal-square",
+      "family": "cardinal",
+      "ci": true,
+      "text": "thence North, 10 m; thence East, 10 m; thence South, 10 m; thence West, 10 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ],
+          [
+            "W",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "due-case-spacing",
+      "family": "cardinal",
+      "ci": false,
+      "text": "thence due NORTH, 10 m; thence due east, 10 m; thence DUE South, 10 m; thence WEST, 10 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ],
+          [
+            "W",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "quadrant-triangle",
+      "family": "quadrant",
+      "ci": true,
+      "text": "thence N45-00E, 10 m; thence S45-00E, 10 m; thence W, 14.1421356237 m;",
+      "expected": {
+        "courses": [
+          [
+            "N45-00E",
+            10
+          ],
+          [
+            "S45-00E",
+            10
+          ],
+          [
+            "W",
+            14.1421356237
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "second-precision",
+      "family": "seconds",
+      "ci": true,
+      "text": "thence N45-30-12E, 12.345678901234 m; thence E, 8.125 m; thence S, 9.75 m;",
+      "expected": {
+        "courses": [
+          [
+            "N45-30-12E",
+            12.345678901234
+          ],
+          [
+            "E",
+            8.125
+          ],
+          [
+            "S",
+            9.75
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "documentary-punctuation",
+      "family": "formatting",
+      "ci": true,
+      "text": "thence N. 30 deg. 53' E., 10.22 m.; thence S. 69 deg. 07' E., 53.75 metres; thence West, 12 meters;",
+      "expected": {
+        "courses": [
+          [
+            "N30-53E",
+            10.22
+          ],
+          [
+            "S69-07E",
+            53.75
+          ],
+          [
+            "W",
+            12
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "unicode-minute",
+      "family": "formatting",
+      "ci": false,
+      "text": "thence N. 1\u00b0 44\u2032 E., 76.00 meters; thence S. 64 deg, 51\u2019 W., 77.43 metres; thence West, 12 m;",
+      "expected": {
+        "courses": [
+          [
+            "N1-44E",
+            76
+          ],
+          [
+            "S64-51W",
+            77.43
+          ],
+          [
+            "W",
+            12
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "wrapped-thence",
+      "family": "multiline",
+      "ci": true,
+      "text": "thence Due\nNorth,\n10 m;\nthence East, 10 m;\nthence South, 10 m;\nthence West, 10 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ],
+          [
+            "W",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "manual-lines",
+      "family": "multiline",
+      "ci": false,
+      "text": "Due North, 10 m\nEast 10 m\nSouth, 10 m\nWest 10 m",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ],
+          [
+            "W",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "manual-semicolons",
+      "family": "formatting",
+      "ci": false,
+      "text": "N 10 m; E 10 m; S 10 m; W 10 m",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ],
+          [
+            "W",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "tie-reference-area",
+      "family": "metadata",
+      "ci": true,
+      "text": "Beginning at point 1, being Due West, 25 m from Synthetic Control A; thence North, 10 m; thence East, 10 m; thence South, 10 m; thence West, 10 m; Stated area: 100 square metres;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ],
+          [
+            "W",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [
+          [
+            "W",
+            25
+          ]
+        ],
+        "references": [
+          "Synthetic Control A"
+        ],
+        "stated_areas": [
+          100
+        ],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "quoted-reference",
+      "family": "metadata",
+      "ci": false,
+      "text": "Reference point: \"Synthetic; thence monument\"; thence N, 10 m; thence E, 10 m; thence S, 10 m; Stated area: 50 sqm;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [
+          "Synthetic; thence monument"
+        ],
+        "stated_areas": [
+          50
+        ],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "destinations-return",
+      "family": "metadata",
+      "ci": false,
+      "text": "thence N, 10 m to point 2; thence E, 10 m to point \u201c3\u201d; thence S, 10 m to point 4; thence W, 10 m to the point of beginning;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ],
+          [
+            "W",
+            10
+          ]
+        ],
+        "destinations": [
+          2,
+          3,
+          4,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false,
+          true
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "grouping-scientific",
+      "family": "numeric",
+      "ci": true,
+      "text": "thence N, 1,000.25 m; thence E, 1e-3 m; thence S, 1,000.25 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            1000.25
+          ],
+          [
+            "E",
+            0.001
+          ],
+          [
+            "S",
+            1000.25
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": []
+      }
+    },
+    {
+      "id": "missing-continuation",
+      "family": "continuation",
+      "ci": true,
+      "text": "thence N, 10 m; thence E, 10 m; thence S, 10 m; continued on next page",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [
+          "unparsed_context",
+          "unresolved_continuation"
+        ],
+        "intake_diagnostic_codes": [
+          "unparsed_context",
+          "unresolved_continuation"
+        ]
+      }
+    },
+    {
+      "id": "unparsed-middle-row",
+      "family": "partial",
+      "ci": true,
+      "text": "thence N, 10 m; thence unreadable; thence S, 10 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          null,
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [
+          "missing_distance",
+          "too_few_courses"
+        ],
+        "intake_diagnostic_codes": [
+          "missing_distance",
+          "too_few_courses"
+        ]
+      }
+    },
+    {
+      "id": "two-supported-courses",
+      "family": "partial",
+      "ci": false,
+      "text": "thence N, 10 m; thence E, 10 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [
+          "too_few_courses"
+        ],
+        "intake_diagnostic_codes": [
+          "too_few_courses"
+        ]
+      }
+    },
+    {
+      "id": "malformed-grouping",
+      "family": "numeric",
+      "ci": false,
+      "text": "thence N, 1,00 m; thence E, 10 m; thence S, 10 m;",
+      "expected": {
+        "courses": [
+          null,
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [
+          "invalid_distance",
+          "too_few_courses"
+        ],
+        "intake_diagnostic_codes": [
+          "invalid_distance",
+          "too_few_courses"
+        ]
+      }
+    },
+    {
+      "id": "ambiguous-azimuths",
+      "family": "ambiguous",
+      "ci": true,
+      "text": "thence 45, 10 m; thence 180, 10 m; thence 270, 10 m;",
+      "expected": {
+        "courses": [
+          null,
+          null,
+          null
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "rejected",
+        "parser_diagnostic_codes": [
+          "invalid_bearing",
+          "too_few_courses"
+        ],
+        "intake_diagnostic_codes": [
+          "invalid_bearing",
+          "too_few_courses"
+        ]
+      }
+    },
+    {
+      "id": "conflicting-references",
+      "family": "ambiguous",
+      "ci": false,
+      "text": "Reference point: \"Synthetic A\"; Reference point: \"Synthetic B\"; thence N, 10 m; thence E, 10 m; thence S, 10 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [
+          "Synthetic A",
+          "Synthetic B"
+        ],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": [
+          "conflicting_values"
+        ]
+      }
+    },
+    {
+      "id": "conflicting-areas",
+      "family": "ambiguous",
+      "ci": false,
+      "text": "thence N, 10 m; thence E, 10 m; thence S, 10 m; Stated area: 100 square metres; Stated area: 120 square metres;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [
+          100,
+          120
+        ],
+        "parser_complete": true,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [],
+        "intake_diagnostic_codes": [
+          "conflicting_values"
+        ]
+      }
+    },
+    {
+      "id": "recovered-bracket-noise",
+      "family": "recovered-text",
+      "ci": true,
+      "text": "thence N [noise] 45-30 E, 10 m; thence E, 10 m; thence S, 10 m;",
+      "expected": {
+        "courses": [
+          null,
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [
+          "invalid_bearing",
+          "too_few_courses"
+        ],
+        "intake_diagnostic_codes": [
+          "invalid_bearing",
+          "too_few_courses"
+        ]
+      }
+    },
+    {
+      "id": "recovered-distance-artifact",
+      "family": "recovered-text",
+      "ci": false,
+      "text": "thence W, 62.9,9 meters; thence N, 10 m; thence E, 10 m;",
+      "expected": {
+        "courses": [
+          null,
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [
+          "invalid_distance",
+          "too_few_courses"
+        ],
+        "intake_diagnostic_codes": [
+          "invalid_distance",
+          "too_few_courses"
+        ]
+      }
+    },
+    {
+      "id": "unsupported-number-words",
+      "family": "metadata",
+      "ci": false,
+      "text": "Stated area: ONE HUNDRED square metres; thence N, 10 m; thence E, 10 m; thence S, 10 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [
+          null
+        ],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "partial",
+        "parser_diagnostic_codes": [
+          "invalid_stated_area"
+        ],
+        "intake_diagnostic_codes": [
+          "invalid_stated_area"
+        ]
+      }
+    },
+    {
+      "id": "retained-context",
+      "family": "context",
+      "ci": true,
+      "text": "Synthetic context; thence N, 10 m; thence E, 10 m; thence S, 10 m;",
+      "expected": {
+        "courses": [
+          [
+            "N",
+            10
+          ],
+          [
+            "E",
+            10
+          ],
+          [
+            "S",
+            10
+          ]
+        ],
+        "destinations": [
+          null,
+          null,
+          null
+        ],
+        "returns": [
+          false,
+          false,
+          false
+        ],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": true,
+        "record_created": true,
+        "status": "complete",
+        "parser_diagnostic_codes": [
+          "unparsed_context"
+        ],
+        "intake_diagnostic_codes": [
+          "unparsed_context"
+        ]
+      }
+    },
+    {
+      "id": "empty-input",
+      "family": "partial",
+      "ci": false,
+      "text": "",
+      "expected": {
+        "courses": [],
+        "destinations": [],
+        "returns": [],
+        "tie_courses": [],
+        "references": [],
+        "stated_areas": [],
+        "parser_complete": false,
+        "record_created": false,
+        "status": "rejected",
+        "parser_diagnostic_codes": [
+          "too_few_courses"
+        ],
+        "intake_diagnostic_codes": [
+          "too_few_courses"
+        ]
+      }
+    }
+  ]
+}

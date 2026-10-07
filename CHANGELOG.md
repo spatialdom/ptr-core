@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add versioned synthetic technical-description benchmark `td-v1.0.0` (#21),
+  with explicit normalized rows, metadata, ambiguity and diagnostic expectations.
+  Report exact recovery, case status, syntax-family failures and version/commit
+  identity; compare fixed-corpus reports to expose regressions. CI runs a
+  representative subset and uploads reports; tests cover the full corpus and
+  benchmark failure/comparison behavior. Exclude document/model evaluation and
+  prohibit unapproved private inputs.
+
 - Make Shapely and pyproj optional through `ptr-core[geospatial]` (#27). Base
   parsing, validation, local computation, exports, comparison and rigid transforms
   remain dependency-free. Load backends only at advanced call sites and report

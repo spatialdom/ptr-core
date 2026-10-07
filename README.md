@@ -307,6 +307,22 @@ A record with serialization, structural, or semantic errors is not conforming.
 Geometric QA findings are reported separately and do not by themselves rewrite
 or invalidate documentary source truth.
 
+## Parser Benchmark
+
+Run the versioned synthetic recovered-text benchmark from this checkout:
+
+```bash
+python -m benchmarks.technical_description --output .benchmark-results/current.json
+```
+
+The report identifies Core's version/commit and records exact course recovery,
+complete/partial/rejected cases, diagnostic accuracy, and syntax-family failures.
+Use `--baseline <prior-report.json>` with the same corpus/subset to expose
+regressions across Core versions. CI runs a fixed representative subset; tests
+also check the full corpus. See [benchmarks/README.md](benchmarks/README.md) for
+metrics, corpus versioning, rights/privacy rules, and release-blocking failures.
+This evaluates parcel text interpretation, independently of OCR or models.
+
 ## License
 
 PTR Core is released under the MIT License. See `LICENSE`.

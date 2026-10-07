@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import html
 import json
 import math
 import re
@@ -37,9 +38,12 @@ _TIE = re.compile(
 )
 _AREA = re.compile(
     r"(?:Stated area:|containing\s+an?\s+area\s+of)\s*"
-    r"(?P<number>[^\s]+)\s+(?:square\s+(?:meters?|metres?)|sq\.?\s*m\.?|sqm|m2)"
+    r"(?P<number>.+?)\s+(?:square\s+(?:meters?|metres?)"
+    r"(?:\s+and\s+[\w\s-]+?square\s+decimeters?)?"
+    r"|sq\.?\s*m\.?|sqm|m2)"
+    r"(?:\s*\((?P<numeric>[\d,]+(?:\.\d+)?)\))?"
     r"(?:,\s*more or less)?",
-    re.IGNORECASE,
+    re.IGNORECASE | re.DOTALL,
 )
 _QUOTED_REFERENCE = re.compile(
     r'(?:\bfrom\s+|\bReference point:\s*)(?P<quoted>"(?:\\.|[^"\\])*")',
@@ -115,6 +119,7 @@ class ParsedCourse:
     returns_to_beginning: bool = False
     reference_point: str | None = None
     diagnostics: tuple[Diagnostic, ...] = ()
+    distance_text: str | None = None
 
     def to_mapping(self) -> dict[str, Any]:
         return {
@@ -123,6 +128,7 @@ class ParsedCourse:
             "destination_point": self.destination_point,
             "returns_to_beginning": self.returns_to_beginning,
             "reference_point": self.reference_point,
+            "distance_text": self.distance_text,
             "diagnostics": ValidationResult(self.diagnostics).to_mapping()[
                 "diagnostics"
             ],
@@ -193,14 +199,19 @@ def _reference(text: str) -> str:
 
 
 def _parse_row(text: str, span: SourceSpan) -> ParsedCourse:
+    text = html.unescape(text).strip()
     text = re.sub(r"^thence\s*", "", text, flags=re.IGNORECASE).strip()
     match = _COURSE.fullmatch(text)
     if match is None:
-        code = (
-            "missing_distance"
-            if not re.search(r"\b(?:m|meters?|metres?)\b", text, re.I)
-            else "unrecognized_course"
-        )
+        code = "unrecognized_course"
+        if not re.search(r"\b(?:m|meters?|metres?)\b", text, re.I):
+            bearing_text = re.split(r"\s+to\s+", text, maxsplit=1, flags=re.I)[0]
+            try:
+                parse_bearing(bearing_text.rstrip(" ,"))
+            except BearingError:
+                pass
+            else:
+                code = "missing_distance"
         diagnostic = _diagnostic(
             code, "Course syntax is incomplete or unsupported.", span
         )
@@ -217,7 +228,82 @@ def _parse_row(text: str, span: SourceSpan) -> ParsedCourse:
             "invalid_destination", "Point labels must be positive.", span
         )
         return ParsedCourse(None, span, diagnostics=(diagnostic,))
-    return ParsedCourse(course, span, destination, bool(match["return"]))
+    return ParsedCourse(
+        course,
+        span,
+        destination,
+        bool(match["return"]),
+        distance_text=match["distance"].replace(",", ""),
+    )
+
+
+def _area_number(amount: str) -> float:
+    """Explicit documentary numeric wrappers or unambiguous number words."""
+    if _NUMBER.fullmatch(amount):
+        return parse_distance(amount)
+    small = dict(
+        zip(
+            [
+                "zero",
+                "one",
+                "two",
+                "three",
+                "four",
+                "five",
+                "six",
+                "seven",
+                "eight",
+                "nine",
+                "ten",
+                "eleven",
+                "twelve",
+                "thirteen",
+                "fourteen",
+                "fifteen",
+                "sixteen",
+                "seventeen",
+                "eighteen",
+                "nineteen",
+            ],
+            range(20),
+            strict=True,
+        )
+    )
+    small.update(
+        dict(
+            zip(
+                [
+                    "twenty",
+                    "thirty",
+                    "forty",
+                    "fifty",
+                    "sixty",
+                    "seventy",
+                    "eighty",
+                    "ninety",
+                ],
+                range(20, 100, 10),
+                strict=True,
+            )
+        )
+    )
+    scales = {"thousand": 1000, "million": 1000000, "billion": 1000000000}
+    total = group = 0
+    for word in amount.lower().replace("-", " ").split():
+        if word == "and":
+            continue
+        if word in small:
+            group += small[word]
+        elif word == "hundred":
+            group = max(group, 1) * 100
+        elif word in scales:
+            total += max(group, 1) * scales[word]
+            group = 0
+        else:
+            raise CourseParseError(
+                "Unsupported stated-area syntax.", code="invalid_stated_area"
+            )
+    return parse_distance(total + group)
 
 
 def parse_technical_description(
@@ -272,6 +358,18 @@ def parse_technical_description(
             continue
         span = SourceSpan(start, end, raw, candidate_id, source_links)
         if re.match(r"(?:e?ginning|Beginning)\b", body, re.I):
+            if not re.search(r"\bbeing\b", body, re.I):
+                unparsed.append(span)
+                diagnostics.append(
+                    Diagnostic(
+                        "interpretation",
+                        "unparsed_context",
+                        "Beginning-point wording retained without a tie line.",
+                        f"$.text[{start}:{end}]",
+                        Severity.INFO,
+                    )
+                )
+                continue
             match = _TIE.fullmatch(body)
             if match is None:
                 row = ParsedCourse(
@@ -299,7 +397,11 @@ def parse_technical_description(
                         ),
                     )
                 row = ParsedCourse(
-                    parsed.course, span, reference_point=reference, diagnostics=errors
+                    parsed.course,
+                    span,
+                    reference_point=reference,
+                    diagnostics=errors,
+                    distance_text=parsed.distance_text,
                 )
                 if reference is not None:
                     references.append(ParsedValue(reference, span))
@@ -323,8 +425,26 @@ def parse_technical_description(
                     raise CourseParseError(
                         "Unsupported stated-area syntax.", code="invalid_stated_area"
                     )
-                area = parse_distance(match["number"])
+                amount = match["number"].strip()
+                parenthesized = re.fullmatch(r"([A-Za-z\s-]+)\(([\d,.]+)\)", amount)
+                numeric = match["numeric"] or (
+                    parenthesized[2] if parenthesized else None
+                )
+                wording = parenthesized[1].strip() if parenthesized else amount
+                area = _area_number(numeric or wording)
                 areas.append(ParsedValue(area, span))
+                if numeric and "decimeter" not in body.lower():
+                    word_area = _area_number(wording)
+                    if word_area != area:
+                        areas.append(ParsedValue(word_area, span))
+                        diagnostics.append(
+                            _diagnostic(
+                                "conflicting_stated_area",
+                                "Written and numeric stated areas disagree. "
+                                "Review both.",
+                                span,
+                            )
+                        )
             except CourseParseError as exc:
                 areas.append(ParsedValue(None, span))
                 unparsed.append(span)

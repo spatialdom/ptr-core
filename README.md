@@ -13,9 +13,9 @@ framework, database, or UI dependency.
 
 ## Install
 
-Release candidate: v0.1.1 is prepared for public distribution; publication is
-approved after the release-preparation PR is merged. See
-[docs/RELEASING.md](docs/RELEASING.md) for the publication sequence.
+Release candidate: v0.1.1 is prepared for public distribution. The repository is
+public and release preparation is merged; artifact publication is still pending.
+See [docs/RELEASING.md](docs/RELEASING.md) for the verified publication command.
 After publication, install the immutable GitHub wheel (PyPI is not yet configured):
 
 ```bash

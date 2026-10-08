@@ -14,11 +14,20 @@ release tags/assets must never be reassigned or replaced. Future incompatible
 changes after publication require a new minor version. Supported PTR versions
 are documented separately from library API compatibility.
 
-## Current publication gates
+## Published release and public distribution review
 
-Release preparation for v0.1.1 was merged in PR #29. Publish from reviewed
-`main` after the publication workflow PR is merged. The wheel and source archive
-must correspond to the same reviewed merged commit and package version.
+PTR Core v0.1.1 is available on
+[PyPI](https://pypi.org/project/ptr-core/0.1.1/) and as a
+[GitHub release](https://github.com/spatialdom/ptr-core/releases/tag/v0.1.1).
+Both were published on 2026-10-08. The
+[PyPI publication run](https://github.com/spatialdom/ptr-core/actions/runs/37798671926)
+uploaded the existing GitHub wheel and source distribution through Trusted
+Publishing. Their SHA256 hashes match across both hosts, and fresh base and
+geospatial installations passed on Linux and Windows.
+
+Release preparation was merged in PR #29, GitHub publication automation in
+PR #31, and PyPI publication automation in PR #33. Future distributions must
+correspond to the same reviewed merged commit and package version.
 
 The prepublication audit on 2026-10-07 covered 18 reachable commits, 175 unique
 file blobs, and 108 log files from eight available Actions runs. A scan for
@@ -33,20 +42,21 @@ Vendored public PTR fixtures carry CC BY 4.0 attribution and the original licens
 notice. Synthetic benchmark inputs are authored for Core. Migration fixtures
 originate in private PTR Extract; their provenance declares synthetic data, but
 that private revision has no redistribution license declaration. On 2026-10-07,
-the maintainer approved making PTR Core public after this PR, following review
+the maintainer approved making PTR Core public after the release-preparation PR,
+following review
 of the fixture provenance and historical copies. This approval covers public
 distribution of the copies in Core under its MIT license; it does not make the
 producer repository public or grant a license to its other contents.
 
-GitHub reported PTR Core as public on 2026-10-07. PR #29 is merged, but no tags
-or releases existed when the publication workflow was prepared. The remaining
-gate is a successful publication run and anonymous installation verification.
-PyPI publication remains conditional on an approved publisher being configured.
+GitHub reported PTR Core as public on 2026-10-07. GitHub publication and
+anonymous installation verification are complete. PyPI uses the configured
+Trusted Publisher for `spatialdom/ptr-core`, workflow `pypi.yml`, and GitHub
+environment `pypi`; no stored PyPI API token is required.
 
 Changing GitHub visibility exposes source history, issues, and available Actions
 logs to the public. Only `spatialdom/ptr-core` is approved for this visibility
-change; PTR is already public and PTR Extract remains private. Current history must be reviewed
-again if additional commits or repository content arrive before publication.
+change; PTR is already public and PTR Extract remains private. Review additional
+commits and repository content before future releases.
 
 ## Build and verification
 
@@ -72,7 +82,9 @@ contain the reusable library and license notices.
 The `Release artifacts` workflow checks packaging changes in PRs and runs on
 version tags or manual dispatch. Every run lints/types the source, builds and
 verifies distributions, and retains verification reports as Actions artifacts.
-A manual run defaults to verification only. To publish after this PR is merged:
+A manual run defaults to verification only. Before publishing a new GitHub
+release, update the package version, changelog and matching release notes in a
+reviewed PR and merge it into `main`. Then run:
 
 ```bash
 gh workflow run release.yml --repo spatialdom/ptr-core --ref main -f publish=true
@@ -95,31 +107,54 @@ failure before deciding whether a new version is necessary. The workflow does
 not change repository visibility or upload to PyPI. Enable immutable releases
 where supported.
 
-After a successful publication run, update README's release-candidate status
-and confirm the public asset URLs work before closing #18. Parcel Plotter can
-then consume the immutable release; its actual dependency migration remains
+Confirm the public asset URLs and installation checks succeed before proceeding
+to PyPI publication. Parcel Plotter's actual dependency migration remains
 tracked separately in Parcel Plotter #178.
 
-No PyPI upload token, publishing environment, or trusted-publisher configuration
-is currently established here. GitHub wheel/sdist assets are the initial
-installable release path. Once an approved PyPI publisher is ready, configure it
-for this repository/workflow, publish the same reviewed version, verify index
-metadata and a clean indexed install, then use `ptr-core==0.1.1` in installation
-instructions. Do not claim a PyPI release based solely on building a wheel.
+## PyPI publication
+
+The separate `Publish to PyPI` workflow manually publishes an existing verified
+GitHub release. Select `main` and pass the new release tag, for example
+`v0.1.2` after that GitHub release exists:
+
+```bash
+gh workflow run pypi.yml --repo spatialdom/ptr-core --ref main -f tag=v0.1.2
+gh run list --repo spatialdom/ptr-core --workflow pypi.yml --limit 1
+gh run watch <run-id> --repo spatialdom/ptr-core --exit-status
+```
+
+The workflow checks that the release is published, is not a prerelease, matches
+its package version, and belongs to reviewed `main` history. It downloads the
+wheel, source archive and checksums, verifies the hashes and metadata, and
+uploads the distributions with PyPI Trusted Publishing. It then installs the
+exact indexed version in fresh base and geospatial environments and runs the
+installed-package smoke checks. It does not rebuild the published artifacts.
+
+v0.1.1 is already published; do not rerun an upload for that version. Publish a
+new version for future package changes. If publication succeeds but a subsequent
+installation check fails, inspect the run and verify the indexed package before
+deciding on a new release. Update user-facing documentation only after indexed
+installation is verified. General installation uses `ptr-core`; application
+dependencies should pin a reviewed version such as `ptr-core==0.1.1`.
 
 ## Parcel Plotter #178 handoff
 
-Keep the application's existing pin until the public release is downloadable.
-Its workspace may have unrelated in-progress changes; do not overwrite them.
-Use the explicit extra and the released wheel's verified hash in its backend
-dependency declaration when PyPI is unavailable:
+The public release is ready for integration. Use the explicit extra and reviewed
+PyPI version in the backend dependency declaration:
+
+```text
+ptr-core[geospatial]==0.1.1
+```
+
+The application's workspace may have unrelated in-progress changes; do not
+overwrite them. If installing from GitHub assets instead, use the released
+wheel's verified hash:
 
 ```text
 ptr-core[geospatial] @ https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl#sha256=<verified-wheel-sha256>
 ```
 
-After a verified PyPI publication, prefer `ptr-core[geospatial]==0.1.1`. Docker,
-CI, and local installs must consume the same immutable declaration. Retest
+Docker, CI, and local installs must consume the same pinned declaration. Retest
 parser/validation/compute/georeferencing/CRS/export paths against the installed
 artifact and check existing health/version metadata. Migrate external-candidate
 review through a caller-owned adapter before advancing past the neutral-intake

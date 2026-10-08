@@ -145,17 +145,18 @@ review still requires the separate neutral-intake migration described above.
 
 Replace an application dependency on `ptr-core` with `ptr-core[geospatial]` if
 it calls topology, polygon-to-course conversion, or CRS transforms. Preserve any
-reviewed version or commit pin. For example, a VCS dependency becomes:
+reviewed version while selecting the extra. For the published v0.1.1 release,
+use this application dependency:
 
 ```text
-ptr-core[geospatial] @ git+https://github.com/spatialdom/ptr-core.git@<reviewed-commit>
+ptr-core[geospatial]==0.1.1
 ```
 
-Parcel Plotter's backend dependency declaration and install documentation now
-request this extra. Its current commit pin remains unchanged; advance it to the
-reviewed release containing this change when published. Existing older pins
-still install their original mandatory backends. Backend Docker builds consume
-the same dependency declaration as local installs.
+Applications migrating from a development commit must review the neutral-intake
+adapter changes before adopting v0.1.1. Parcel Plotter's release migration is
+tracked in #178; changing Core documentation does not migrate that application.
+Existing older pins still install their original mandatory backends. Backend
+Docker builds must consume the same dependency declaration as local installs.
 
 For local integration verification, install `.[geospatial]` from this checkout
 and place its `src` first on `PYTHONPATH` when running Parcel Plotter tests. Public

@@ -36,8 +36,10 @@ The GitHub release also provides the same wheel and source distribution with
 `SHA256SUMS`. PyPI publication through Trusted Publishing succeeded on
 2026-10-08; fresh base and geospatial installations passed on Linux and Windows,
 and the PyPI distribution hashes match the GitHub assets. See
-[docs/RELEASING.md](docs/RELEASING.md) for publication and Parcel Plotter #178
-coordination; [docs/MIGRATION.md](docs/MIGRATION.md) describes input migration.
+[docs/RELEASING.md](https://github.com/spatialdom/ptr-core/blob/main/docs/RELEASING.md)
+for publication and Parcel Plotter #178 coordination;
+[docs/MIGRATION.md](https://github.com/spatialdom/ptr-core/blob/main/docs/MIGRATION.md)
+describes input migration.
 
 Implementation license: MIT. Vendored PTR conformance materials: CC BY 4.0,
 attributed in `THIRD_PARTY_NOTICES.md`. Synthetic migration fixture distribution

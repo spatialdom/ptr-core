@@ -153,8 +153,8 @@ ptr-core[geospatial]==0.1.1
 ```
 
 Applications migrating from a development commit must review the neutral-intake
-adapter changes before adopting v0.1.1. Parcel Plotter's release migration is
-tracked in #178; changing Core documentation does not migrate that application.
+adapter changes before adopting v0.1.1. Parcel Plotter's release migration and
+application verification are tracked in #178.
 Existing older pins still install their original mandatory backends. Backend
 Docker builds must consume the same dependency declaration as local installs.
 

@@ -13,10 +13,10 @@ framework, database, or UI dependency.
 
 ## Install
 
-Release candidate: v0.1.1 is prepared for public distribution. The repository is
-public and release preparation is merged; artifact publication is still pending.
-See [docs/RELEASING.md](docs/RELEASING.md) for the verified publication command.
-After publication, install the immutable GitHub wheel (PyPI is not yet configured):
+PTR Core v0.1.1 is publicly available as a
+[GitHub release](https://github.com/spatialdom/ptr-core/releases/tag/v0.1.1)
+with a wheel, source distribution, and SHA256 checksums. Install the released
+GitHub wheel (PyPI is not yet configured):
 
 ```bash
 python -m pip install "https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
@@ -28,7 +28,7 @@ GIS consumers select the extra explicitly on that released artifact:
 python -m pip install "ptr-core[geospatial] @ https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
 ```
 
-During release preparation, install from this checkout:
+For development, install from this checkout:
 
 ```bash
 python -m pip install -e .

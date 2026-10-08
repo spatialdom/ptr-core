@@ -1,0 +1,79 @@
+name: Publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing verified GitHub release to publish
+        required: true
+        default: v0.1.1
+        type: string
+
+concurrency:
+  group: ptr-core-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Require a reviewed release and matching package version
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor HEAD origin/main
+          VERSION=$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          test "$RELEASE_TAG" = "v$VERSION"
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease | jq -e '.isDraft == false and .isPrerelease == false'
+          echo "RELEASE_VERSION=$VERSION" >> "$GITHUB_ENV"
+      - name: Download released distributions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --dir dist --pattern "ptr_core-$RELEASE_VERSION-py3-none-any.whl" \
+            --pattern "ptr_core-$RELEASE_VERSION.tar.gz" --pattern SHA256SUMS
+      - name: Verify checksums and package metadata
+        run: |
+          (cd dist && sha256sum --check SHA256SUMS)
+          python -m pip install "twine>=6.0"
+          python -m twine check dist/*.whl dist/*.tar.gz
+          rm dist/SHA256SUMS
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Verify fresh PyPI installations
+        run: |
+          for PROFILE in base geospatial; do
+            python -m venv "$RUNNER_TEMP/pypi-$PROFILE"
+            PYTHON="$RUNNER_TEMP/pypi-$PROFILE/bin/python"
+            PACKAGE="ptr-core==$RELEASE_VERSION"
+            if [ "$PROFILE" = geospatial ]; then
+              PACKAGE="ptr-core[geospatial]==$RELEASE_VERSION"
+            fi
+            for ATTEMPT in 1 2 3 4 5; do
+              if "$PYTHON" -m pip install --index-url https://pypi.org/simple --no-cache-dir "$PACKAGE"; then
+                break
+              fi
+              if [ "$ATTEMPT" = 5 ]; then exit 1; fi
+              sleep 10
+            done
+            "$PYTHON" scripts/release_smoke.py "$RELEASE_VERSION" "$PROFILE"
+          done

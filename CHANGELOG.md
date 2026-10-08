@@ -2,16 +2,19 @@
 
 ## Unreleased
 
+## 0.1.1 - 2026-10-08
+
 - Revise the default parser benchmark to `td-v2.0.0` for PR #30's intentional
   number-word area support and unrecognized-course diagnostic. Preserve the
   original corpus and reject comparisons across revisions.
 
-- Prepare public distribution (#18) with verified wheel/source artifacts,
-  checksums, isolated install tests and a draft-only GitHub release workflow.
+- Publish public distribution (#18) with verified wheel/source artifacts,
+  checksums, isolated install tests and a GitHub release workflow that verifies
+  anonymous downloads and installation after publication.
   Document independent library/PTR versioning and the Parcel Plotter #178 handoff.
-- Preserve CC BY 4.0 attribution for vendored PTR conformance fixtures. Public
-  publication is approved after this PR is merged; retain the synthetic migration
-  fixture provenance and keep the producer repository private.
+- Preserve CC BY 4.0 attribution for vendored PTR conformance fixtures and
+  maintainer-approved public distribution of synthetic migration fixtures.
+  Retain their provenance and keep the producer repository private.
 
 - Add versioned synthetic technical-description benchmark `td-v1.0.0` (#21),
   with explicit normalized rows, metadata, ambiguity and diagnostic expectations.
@@ -44,8 +47,6 @@
   must adapt inputs to `ParcelInput`. See `docs/MIGRATION.md`.
 - Replace extraction-contract tests with neutral intake regression coverage for
   partial rows, metadata conflicts, source copying, and adapter error handoffs.
-
-## 0.1.1 - 2026-10-05
 
 - Accept explicit cardinal words and Due bearings in normalized input (#23);
   stored PTR v0.1 syntax remains strict. Expose stable bearing error codes.

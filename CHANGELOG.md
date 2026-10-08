@@ -4,6 +4,10 @@
 
 ## 0.1.1 - 2026-10-08
 
+- Publish the same verified v0.1.1 wheel and source distribution to PyPI through
+  GitHub Trusted Publishing (#33). Verify matching GitHub/PyPI hashes and fresh
+  base and geospatial installations on Linux and Windows.
+
 - Revise the default parser benchmark to `td-v2.0.0` for PR #30's intentional
   number-word area support and unrecognized-course diagnostic. Preserve the
   original corpus and reject comparisons across revisions.

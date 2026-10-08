@@ -13,34 +13,31 @@ framework, database, or UI dependency.
 
 ## Install
 
-PTR Core v0.1.1 is publicly available as a
+Install PTR Core from [PyPI](https://pypi.org/project/ptr-core/):
+
+```bash
+python -m pip install ptr-core
+```
+
+Install the optional GEOS/PROJ backends for topology, polygon-to-course
+conversion, and CRS transforms:
+
+```bash
+python -m pip install "ptr-core[geospatial]"
+```
+
+Pin the reviewed release in application dependencies with `ptr-core==0.1.1`
+or `ptr-core[geospatial]==0.1.1`. The
 [GitHub release](https://github.com/spatialdom/ptr-core/releases/tag/v0.1.1)
-with a wheel, source distribution, and SHA256 checksums. Install the released
-GitHub wheel (PyPI is not yet configured):
+also provides the same wheel and source distribution with SHA256 checksums.
 
-```bash
-python -m pip install "https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
-```
-
-GIS consumers select the extra explicitly on that released artifact:
-
-```bash
-python -m pip install "ptr-core[geospatial] @ https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
-```
+The base install has no runtime dependencies. It includes loading, parsing,
+validation, local geometry/metrics, and GeoJSON/WKT output.
 
 For development, install from this checkout:
 
 ```bash
 python -m pip install -e .
-```
-
-The base install has no runtime dependencies. It includes loading, parsing,
-validation, local geometry/metrics, and GeoJSON/WKT output. Install the optional
-GEOS/PROJ backends for topology, polygon-to-course conversion, and CRS transforms:
-
-```bash
-python -m pip install -e ".[geospatial]"
-# After a verified PyPI release: python -m pip install "ptr-core[geospatial]==0.1.1"
 ```
 
 Advanced imports remain available in the base install. Calls that need a missing

@@ -24,19 +24,23 @@ Compatibility changes for earlier development-commit consumers:
 - Install the `geospatial` extra for topology, polygon-to-course conversion and
   CRS transforms. Existing public imports remain available in the base install.
 
-Install the reviewed wheel attached to this GitHub release:
+Install the reviewed release from [PyPI](https://pypi.org/project/ptr-core/0.1.1/):
 
 ```bash
-python -m pip install "https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
+python -m pip install "ptr-core==0.1.1"
 # GIS consumers:
-python -m pip install "ptr-core[geospatial] @ https://github.com/spatialdom/ptr-core/releases/download/v0.1.1/ptr_core-0.1.1-py3-none-any.whl"
+python -m pip install "ptr-core[geospatial]==0.1.1"
 ```
 
-`SHA256SUMS` accompanies the wheel and source distribution. PyPI publication is
-separate and must not be claimed until the approved publisher is configured and
-the indexed package is verified. See `docs/RELEASING.md` for release gates and
-Parcel Plotter #178 coordination; `docs/MIGRATION.md` describes input migration.
+The GitHub release also provides the same wheel and source distribution with
+`SHA256SUMS`. PyPI publication through Trusted Publishing succeeded on
+2026-10-08; fresh base and geospatial installations passed on Linux and Windows,
+and the PyPI distribution hashes match the GitHub assets. See
+[docs/RELEASING.md](https://github.com/spatialdom/ptr-core/blob/main/docs/RELEASING.md)
+for publication and Parcel Plotter #178 coordination;
+[docs/MIGRATION.md](https://github.com/spatialdom/ptr-core/blob/main/docs/MIGRATION.md)
+describes input migration.
 
 Implementation license: MIT. Vendored PTR conformance materials: CC BY 4.0,
-attributed in `THIRD_PARTY_NOTICES.md`. The maintainer has approved public publication after the release-preparation
-PR is merged; follow the publication sequence in the release checklist.
+attributed in `THIRD_PARTY_NOTICES.md`. Synthetic migration fixture distribution
+has maintainer approval; the producer repository remains private.
